@@ -1,0 +1,10 @@
+.divider {
+  border-top: 1px solid white;
+}
+.profile {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  justify-content: space-between;
+  width: 175px;
+}

@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
-import Home from '../pages/home/Home';
+import Users from '../components/Users/Users';
+import Home from '../pages/Users/Users';
 
 // Types
 interface BaseRoute {
@@ -26,6 +27,10 @@ const routes: Route[] = [
   {
     path: '/',
     element: <Home />,
+  },
+  {
+    path: '/users',
+    element: <Users />,
   },
   {
     path: '*',

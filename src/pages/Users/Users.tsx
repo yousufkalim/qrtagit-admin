@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import SideMenu from '../../components/SideBar/SideBar';
-import Users from '../../components/Users/Users';
+// import User from '../../components/Users/Users';
 
-const SideBar: FC = () => {
+const Users: FC = () => {
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <SideMenu />
-      <Users />
     </div>
   );
 };
 
-export default SideBar;
+export default Users;

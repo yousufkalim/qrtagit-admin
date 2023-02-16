@@ -1,0 +1,35 @@
+.css-1aquho2-MuiTabs-indicator {
+  display: none;
+}
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  background-color: #0a3f74;
+  color: white !important;
+  padding: 10px;
+  border-radius: 2.5px;
+}
+.css-jpln7h-MuiTabs-scroller {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 6px;
+}
+.headlines {
+  display: flex;
+  justify-content: space-between;
+}
+.headings {
+  font-size: 14px;
+  color: #212121;
+  font-weight: 500;
+}
+.coloumns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

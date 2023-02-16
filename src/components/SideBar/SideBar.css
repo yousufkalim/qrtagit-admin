@@ -6,5 +6,25 @@
   align-items: center;
   margin-left: 30px;
   justify-content: space-between;
-  width: 175px;
+  width: 170px;
+}
+.notification-circle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: #f00b0b;
+  border: 1px solid white;
+  left: 14px;
+  bottom: 10px;
+}
+.notifications {
+  position: relative;
+}
+.number-of-notifications {
+  font-size: 8px;
+  color: white;
 }

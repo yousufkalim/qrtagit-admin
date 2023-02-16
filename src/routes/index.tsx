@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import Users from '../components/Users/Users';
+import Subscriptions from '../pages/Subscriptions/Subscriptions';
 import Home from '../pages/Users/Users';
 
 // Types
@@ -29,8 +29,8 @@ const routes: Route[] = [
     element: <Home />,
   },
   {
-    path: '/users',
-    element: <Users />,
+    path: '/subscriptions',
+    element: <Subscriptions />,
   },
   {
     path: '*',

@@ -28,14 +28,17 @@ import notifications from '../../assets/sideBar/notifications.svg';
 import downArrow from '../../assets/sideBar/arrowDown.svg';
 import './SideBar.css';
 import Users from '../Users/Users';
+// import Subscriptions from '../Subscriptions/Subscriptions';
 
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
+  background: '#DDDDDD',
+  height: '100vh',
   flexGrow: 1,
-  padding: theme.spacing(3),
+  padding: theme.spacing(1),
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -112,15 +115,14 @@ const SideBar: FC = (props: SideBarProps) => {
           </IconButton>
           <Toolbar
             sx={{
-              padding: 'unset',
               width: '100%',
               display: 'flex',
-              justifyContent: 'space-between',
             }}
           >
             <Typography
               fontSize="20px"
               fontWeight="500"
+              marginRight="auto"
               color="#212121"
               variant="h6"
               noWrap
@@ -129,7 +131,6 @@ const SideBar: FC = (props: SideBarProps) => {
               All Users
             </Typography>
             <Typography
-              width="20%"
               fontSize="16px"
               fontWeight="500"
               display="flex"
@@ -139,9 +140,14 @@ const SideBar: FC = (props: SideBarProps) => {
               justifyContent="flex-end"
               component="div"
             >
-              <img src={notifications} alt="" />
+              <div className="notifications">
+                <div className="notification-circle">
+                  <span className="number-of-notifications">2</span>
+                </div>
+                <img src={notifications} alt="" />
+              </div>
               <div className="profile">
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                <Avatar alt="Henry Mark" src="/static/images/avatar/1.jpg" />
                 Henry Mark
                 <img src={downArrow} alt="down-arrow" />
               </div>
@@ -227,10 +233,11 @@ const SideBar: FC = (props: SideBarProps) => {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Typography paragraph>
+        <Typography>
           <Users />
+          {/* <Subscriptions /> */}
         </Typography>
-        <Typography paragraph>
+        {/* <Typography paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
           facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
           tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
@@ -240,7 +247,7 @@ const SideBar: FC = (props: SideBarProps) => {
           tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
           nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
           accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        </Typography> */}
       </Main>
     </Box>
   );

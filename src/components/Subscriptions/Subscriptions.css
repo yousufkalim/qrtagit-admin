@@ -1,0 +1,75 @@
+.white-canvas {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px 10px 0px 0px;
+}
+.package-box {
+  width: 30%;
+  box-shadow: 4px 7px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  height: fit-content;
+}
+.header-div {
+  background-color: #0c80a0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 15px 10px;
+  font-weight: 500;
+  font-size: 16px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.below-header {
+  padding: 10px;
+}
+.saveBtn {
+  box-shadow: 4px 7px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  padding: 10px;
+  background: #0a3f74;
+  width: 100%;
+  margin-top: 15px;
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+}
+.heading {
+  font-size: 14px;
+  font-weight: 500;
+  color: #212121;
+  margin-bottom: 2px;
+}
+.all-packages {
+  display: flex;
+  justify-content: space-between;
+}
+.divider {
+  border-bottom: 1px solid #bababa;
+  margin: 5px 0;
+}
+.description {
+  font-weight: 400;
+  font-size: 14px;
+  color: #323232;
+}
+.total-users {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 14%;
+  margin: 25px 0 10px 0;
+}
+.grey-circle {
+  width: 4px;
+  height: 4px;
+  background-color: #bebebe;
+  border-radius: 50%;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

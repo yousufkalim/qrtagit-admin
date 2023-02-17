@@ -1,0 +1,48 @@
+.Feedback {
+  background-color: #fff;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 10px;
+}
+.Feedback_center {
+  display: flex;
+}
+.Feedback_col {
+  background-color: #e5e7eb;
+  border-radius: 10px;
+  margin: 10px;
+  width: 50%;
+}
+.Feedback_box {
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #fff;
+  margin: 10px;
+}
+.Feedback_user {
+  display: flex;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+.Feedback_date {
+  margin-left: auto;
+}
+.Feedback_user_img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+.Feedback_user_name {
+  font-weight: bold;
+}
+.Feedback_user_email {
+  opacity: 0.8;
+}
+.Feedback_content_p {
+  padding-top: 7px;
+}
+.Feedback_msg {
+  font-weight: bold;
+  padding: 10px;
+}

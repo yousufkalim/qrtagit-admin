@@ -1,14 +1,15 @@
 import axios, { Method, AxiosResponse, AxiosError } from 'axios';
 import { baseUrl } from '../config';
 
-const request = async <T>(method: Method, url: string, body: T): Promise<T> => {
+const request = async <T>(method: Method, url: string, body?: T): Promise<T> => {
   const token = localStorage.getItem('token');
+  console.log('token', token);
 
   // Axios initialization with default config
   const api = axios.create({
     baseURL: baseUrl,
     headers: {
-      Authorization: `Bearer ${token ?? ''}`,
+      Authorization: `Token ${token ?? ''}`,
     },
     withCredentials: token !== null,
   });

@@ -25,7 +25,7 @@ const PrivateRoute: FC<IPrivateRoute> = ({ children }) => {
   //     validateLogin();
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //   }, []);
-  if (!isLogin) {
+  if (isLogin) {
     return <> {children}</>;
   }
   return <Navigate to="/login" />;

@@ -10,6 +10,13 @@ import Paper from '@mui/material/Paper';
 
 import './Subscriptions.css';
 import edit from '../../assets/Subscription/edit.svg';
+
+const arrayIs = [
+  { name: 'john', email: 'john@gmail.com' },
+  { name: 'john1', email: 'john1@gmail.com' },
+  { name: 'john2', email: 'john2@gmail.com' },
+  { name: 'john3', email: 'john3@gmail.com' },
+];
 const Subscriptions: FC = () => {
   return (
     <div className="white-canvas">
@@ -90,21 +97,18 @@ const Subscriptions: FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell>
-                <div className="row">
-                  <Avatar alt="Henry Mark" src="/static/images/avatar/1.jpg" />
-                  <h3>Jogn Doe</h3>
-                </div>
-              </TableCell>
-              <TableCell>johndoe@email.com</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-            </TableRow>
+            {arrayIs.map((row) => (
+              <TableRow key={row.email}>
+                <TableCell>
+                  <div className="row">
+                    <Avatar alt={row.name} src="" />
+                    <h3>{row.name}</h3>
+                  </div>
+                </TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

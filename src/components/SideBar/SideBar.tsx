@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -27,10 +27,16 @@ import logout from '../../assets/sideBar/logout.svg';
 import notifications from '../../assets/sideBar/notifications.svg';
 import downArrow from '../../assets/sideBar/arrowDown.svg';
 import './SideBar.css';
-import Users from '../Users/Users';
-// import Subscriptions from '../Subscriptions/Subscriptions';
-
+import { NavLink, useLocation } from 'react-router-dom';
 const drawerWidth = 240;
+
+const routesArray = [
+  { name: 'Users', path: '/users' },
+  { name: 'Subscriptions', path: '/subscriptions' },
+  { name: 'Feedback', path: '/feedback' },
+  { name: 'Analytics', path: '/analytics' },
+  { name: 'Percentage', path: '/percentage' },
+];
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -55,6 +61,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 
 interface SideBarProps extends MuiAppBarProps {
   open?: boolean;
+  children?: ReactNode;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -89,8 +96,13 @@ const buttonSX = {
   },
 };
 
-const SideBar: FC = (props: SideBarProps) => {
+const SideBar: FC<SideBarProps> = (props) => {
   const [open, setOpen] = React.useState(false);
+  const location = useLocation();
+
+  const path = location.pathname;
+
+  const headerName = routesArray.find((route) => route.path === path);
 
   const handleDrawerOpen = (): void => {
     setOpen(true);
@@ -99,17 +111,20 @@ const SideBar: FC = (props: SideBarProps) => {
   const handleDrawerClose = (): void => {
     setOpen(false);
   };
+  const activeStyle = {
+    backgroundColor: '#000',
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar sx={{ background: 'white' }} position="fixed" open={open}>
         <Toolbar>
           <IconButton
-            color="inherit"
+            color="secondary"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ background: 'black', mr: 2, ...(open && { display: 'none' }) }}
           >
             <img src={menu} alt="menu" />
           </IconButton>
@@ -128,7 +143,7 @@ const SideBar: FC = (props: SideBarProps) => {
               noWrap
               component="div"
             >
-              All Users
+              {headerName?.name}
             </Typography>
             <Typography
               fontSize="16px"
@@ -184,9 +199,14 @@ const SideBar: FC = (props: SideBarProps) => {
             paddingTop: '20px',
           }}
         >
-          {['Users', 'Subscriptions', 'Feedback', 'Analytics', 'Referral Discount'].map(
-            (text, index) => (
-              <ListItem key={text} disablePadding>
+          {routesArray?.map((item, index) => (
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              replace
+              to={item.path}
+              key={item.name}
+            >
+              <ListItem disablePadding className={`${item.path === path ? 'sideBarcolor' : ''}`}>
                 <ListItemButton sx={buttonSX}>
                   <ListItemIcon sx={{ minWidth: '40px' }}>
                     <img
@@ -204,11 +224,11 @@ const SideBar: FC = (props: SideBarProps) => {
                       alt=""
                     />
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={item.name} />
                 </ListItemButton>
               </ListItem>
-            ),
-          )}
+            </NavLink>
+          ))}
         </List>
         <div className="divider"></div>
         <List
@@ -233,21 +253,7 @@ const SideBar: FC = (props: SideBarProps) => {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Typography>
-          <Users />
-          {/* <Subscriptions /> */}
-        </Typography>
-        {/* <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography> */}
+        <Typography>{props.children}</Typography>
       </Main>
     </Box>
   );

@@ -21,6 +21,12 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
+const arrayIs = [
+  { name: 'john', email: 'john@gmail.com', pakage: 'Pakege 1', percentage: '10%', img: 'img' },
+  { name: 'john1', email: 'john1@gmail.com', pakage: 'Pakege 1', percentage: '10%', img: 'img' },
+  { name: 'john2', email: 'john2@gmail.com', pakage: 'Pakege 1', percentage: '10%', img: 'img' },
+  { name: 'john3', email: 'john3@gmail.com', pakage: 'Pakege 1', percentage: '10%', img: 'img' },
+];
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function TabPanel(props: TabPanelProps) {
@@ -97,20 +103,22 @@ export default function BasicTabs() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <div className="row">
-                    <Avatar alt="Henry Mark" src="/static/images/avatar/1.jpg" />
-                    <h3>Jogn Doe</h3>
-                  </div>
-                </TableCell>
-                <TableCell>johndoe@email.com</TableCell>
-                <TableCell>Package 1</TableCell>
-                <TableCell>10%</TableCell>
-                <TableCell>
-                  <img src={blackDots} alt="" />
-                </TableCell>
-              </TableRow>
+              {arrayIs.map((row) => (
+                <TableRow key={row.email}>
+                  <TableCell>
+                    <div className="row">
+                      <Avatar alt={row.name} src={row.img} />
+                      <h3>{row.name}</h3>
+                    </div>
+                  </TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.pakage}</TableCell>
+                  <TableCell>{row.percentage}</TableCell>
+                  <TableCell>
+                    <img src={blackDots} alt="" />
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

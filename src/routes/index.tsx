@@ -1,6 +1,13 @@
 import React, { ReactElement } from 'react';
-import Subscriptions from '../pages/Subscriptions/Subscriptions';
-import Home from '../pages/Users/Users';
+import SideBar from '../components/SideBar/SideBar';
+import Users from '../components/Users/Users';
+import Subscriptions from '../components/Subscriptions/Subscriptions';
+import Feedback from '../components/Feedback/Feedback';
+import Analytics from '../components/Analytice/Analytics';
+import Percentage from '../components/Percentage/Percentage';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import Login from '../components/Login/Login';
 
 // Types
 interface BaseRoute {
@@ -26,11 +33,71 @@ type Route = Element | Navigate;
 const routes: Route[] = [
   {
     path: '/',
-    element: <Home />,
+    element: (
+      <PrivateRoute>
+        <SideBar>
+          <Users />
+        </SideBar>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/users',
+    element: (
+      <PrivateRoute>
+        <SideBar>
+          <Users />
+        </SideBar>
+      </PrivateRoute>
+    ),
   },
   {
     path: '/subscriptions',
-    element: <Subscriptions />,
+    element: (
+      <PrivateRoute>
+        <SideBar>
+          <Subscriptions />
+        </SideBar>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/feedback',
+    element: (
+      <PrivateRoute>
+        <SideBar>
+          <Feedback />
+        </SideBar>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/analytics',
+    element: (
+      <PrivateRoute>
+        <SideBar>
+          <Analytics />
+        </SideBar>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/percentage',
+    element: (
+      <PrivateRoute>
+        <SideBar>
+          <Percentage />
+        </SideBar>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/login',
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
   {
     path: '*',

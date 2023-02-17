@@ -111,6 +111,9 @@ const SideBar: FC<SideBarProps> = (props) => {
   const handleDrawerClose = (): void => {
     setOpen(false);
   };
+  const activeStyle = {
+    backgroundColor: '#000',
+  };
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -197,8 +200,13 @@ const SideBar: FC<SideBarProps> = (props) => {
           }}
         >
           {routesArray?.map((item, index) => (
-            <NavLink replace to={item.path} key={item.name}>
-              <ListItem disablePadding>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              replace
+              to={item.path}
+              key={item.name}
+            >
+              <ListItem disablePadding className={`${item.path === path ? 'sideBarcolor' : ''}`}>
                 <ListItemButton sx={buttonSX}>
                   <ListItemIcon sx={{ minWidth: '40px' }}>
                     <img

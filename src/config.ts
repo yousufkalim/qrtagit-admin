@@ -1,5 +1,8 @@
-let baseUrl = 'http://localhost:5000/api/v1';
-let mediaUrl = 'http://localhost:5000';
+// let baseUrl = 'http://localhost:5000/api/v1';
+// let mediaUrl = 'http://localhost:5000';
+
+let baseUrl = 'https://withered-feather-36062.botics.co/api/v1';
+let mediaUrl = 'https://withered-feather-36062.botics.co';
 
 // Update the baseUrl and mediaUrl on every environment
 switch (window.location.host) {

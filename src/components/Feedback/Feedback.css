@@ -46,3 +46,50 @@
   font-weight: bold;
   padding: 10px;
 }
+.graph_header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  margin: 2px;
+  padding: 10px 30px 10px 15px;
+}
+.graph_section {
+  padding: 0 20px;
+  padding-bottom: 20px;
+}
+.graph_mail {
+  display: flex;
+  margin: 20px 0;
+}
+.graph_from_p {
+  font-weight: bold;
+}
+.graph_response {
+  padding-top: 50px;
+}
+.graph_textArea {
+  width: 100%;
+  margin-top: 5px;
+  min-height: 300px;
+  padding: 20px;
+  border-radius: 10px;
+}
+.graph_buttons_div {
+  text-align: right;
+}
+.graph_btn {
+  padding: 7px 30px;
+  border-radius: 10px;
+  background-color: white !important;
+  margin-left: 20px;
+  color: gray;
+}
+.graph_btn2 {
+  padding: 7px 30px;
+  border-radius: 10px;
+  background-color: #0a3f74 !important;
+  margin-left: 20px;
+  color: white;
+}

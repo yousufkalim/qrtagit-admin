@@ -7,6 +7,18 @@
   padding: 10px;
   border-radius: 2.5px;
 }
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+  margin-left: 20px !important;
+}
+.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
+  border-radius: 10px !important;
+  width: 10%;
+  padding: 10px 15px;
+}
+.css-1jwwn0q-MuiButtonBase-root-MuiMenuItem-root,
+.css-xra2ud-MuiButtonBase-root-MuiMenuItem-root {
+  padding-left: 0 !important;
+}
 .css-jpln7h-MuiTabs-scroller {
   display: flex !important;
   align-items: center;
@@ -29,6 +41,20 @@
   justify-content: center;
 }
 .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-bar {
+  width: 35%;
+  position: relative;
+}
+.search-icon {
+  position: absolute;
+  top: 16px;
+  left: 7px;
+}
+.option-div {
   display: flex;
   align-items: center;
   gap: 10px;

@@ -11,7 +11,7 @@ const request = async <T>(method: Method, url: string, body?: T): Promise<T> => 
     headers: {
       Authorization: `Token ${token ?? ''}`,
     },
-    withCredentials: token !== null,
+    // withCredentials: token !== null,
   });
 
   return await new Promise((resolve, reject) => {

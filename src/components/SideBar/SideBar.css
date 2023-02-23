@@ -30,4 +30,5 @@
 }
 .sideBarcolor {
   background-color: #0051a3 !important;
+  border-left: 3px solid white;
 }

@@ -1,43 +1,85 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable array-callback-return */
-// import React, { FC } from 'react';
-import React, { FC, useRef, useEffect } from 'react';
+import React, { FC, useRef, useEffect, useState } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; // or import the theme you want
+import request from '../../api/request';
+import moment from 'moment';
 
 import ProfileBg from '../../assets/ProfileBg.png';
 import './Feedback.css';
 
-const user = [
-  {
-    name: 'Hentry',
-    mail: 'henrymark@email.com',
-    userDate: 'Today-13:24',
-    content:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis architecto aspernatur ullam minima ratione id atque magni!',
-  },
-  {
-    name: 'Hentry',
-    mail: 'henrymark@email.com',
-    userDate: 'Today-13:24',
-    content:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis architecto aspernatur ullam minima ratione id atque magni!',
-  },
-];
-const Feedback: FC = () => {
-  const quillRef = useRef<HTMLDivElement>(null);
+interface ILooserObject {
+  address: string;
+  city: string;
+  id: number;
+  postal_code: string;
+  profile_picture: string;
+  state: string;
+  user: number;
+}
 
+interface IUserObject {
+  email: string;
+  enable_push_notification: boolean;
+  id: number;
+  looser: ILooserObject;
+  name: string;
+  phone_number: string;
+  use_device_location: boolean;
+  user_type: string;
+}
+
+interface IResponseUser {
+  created_at: string;
+  id: number;
+  message: string;
+  modified_at: string;
+  replies: IRepliesObject[];
+  subject: string;
+  user: IUserObject;
+}
+
+interface IRepliesObject {
+  created_at: string;
+  feedback: number;
+  id: number;
+  message: string;
+  modified_at: string;
+}
+interface IResponse {
+  feedback: number | null;
+  subject: string;
+  message: string;
+}
+
+const Feedback: FC = () => {
+  const [users, setUsers] = useState<IResponseUser[]>([]);
+  const quillRef = useRef<HTMLDivElement>(null);
+  const [quil, setQuil] = useState<any>();
+  const [user, setUser] = useState<IResponseUser>();
+
+  const getAllFeedbacks = (): void => {
+    request<IResponseUser[]>('get', '/admin/feedback/')
+      .then((res) => {
+        setUsers(res);
+        if (res?.length > 0) {
+          setUser(res[0]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
+    getAllFeedbacks();
     if (quillRef.current) {
       const quill = new Quill(quillRef.current, {
+        placeholder: 'Type your response here...',
         theme: 'snow', // or use the theme you want
         modules: {
           toolbar: [
-            [
-              // { font: [] },
-              // { size: [] },
-              { header: [1, 2, 3, 4, 5, 6, false] },
-            ],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
             ['bold', 'italic', 'underline', 'strike'],
             [{ color: [] }, { background: [] }],
 
@@ -45,110 +87,99 @@ const Feedback: FC = () => {
             [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
             [{ script: 'sub' }, { script: 'super' }],
 
-            [
-              'link',
-              'image',
-              // 'video',
-              //  'formula'
-            ],
-            // ['code-block'],
+            ['link', 'image'],
           ],
         },
       });
+      setQuil(quill);
+      console.log('Test ', quill);
     }
   }, []);
+
+  const handleSend = (): void => {
+    if (user) {
+      console.log('quilll ', quil);
+      const data = {
+        feedback: user?.id,
+        subject: user?.subject,
+        message: quil?.editor?.delta?.ops[0].insert.slice(0, -1),
+      };
+      console.log(data, 'data');
+      request<IResponse>('post', '/admin/feedback-reply/', data)
+        .then((res) => {
+          getAllFeedbacks();
+          console.log('response ', res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const handleClickUser = (val: IResponseUser): void => {
+    setUser(val);
+  };
+  console.log(user, 'user');
   return (
     <div className="Feedback">
-      <p className="Feedback_msg">53 messages</p>
+      <p className="Feedback_msg">{users.length} messages</p>
       <div className="Feedback_center">
-        <div className="Feedback_col">
-          {user.map((val, index) => (
-            <div className="Feedback_box" key={index}>
+        <div className="Feedback_col_all">
+          {users.map((val, index) => (
+            <div
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, eqeqeq
+              className={`${user?.id === val.id && 'Feedback_box_active'} Feedback_box`}
+              onClick={() => {
+                handleClickUser(val);
+              }}
+              key={val.id}
+            >
               <div className="Feedback_user">
-                <img src={ProfileBg} alt="" className="Feedback_user_img" />
+                <img src={val.user?.looser?.profile_picture} alt="" className="Feedback_user_img" />
                 <div>
-                  <p className="Feedback_user_name">{val.name}</p>
-                  <p className="Feedback_user_email">{val.mail}</p>
+                  <p className="Feedback_user_name">{val.user?.name}</p>
+                  <p className="Feedback_user_email">{val.user?.email}</p>
                 </div>
-                <p className="Feedback_date">{val.userDate}</p>
+                <p className="Feedback_date">
+                  {
+                    moment(val.modified_at).calendar()
+                    // ' - ' +
+                    // moment(val.modified_at).format('LT')
+                  }
+                </p>
               </div>
               <div className="Feedback_content">
-                <p className="Feedback_content_p">{val.content}</p>
+                <p className="Feedback_content_p">{val.message}</p>
               </div>
             </div>
           ))}
         </div>
         <div className="Feedback_col">
-          {/* quill */}
-          {/* quill */}
-          {/* <div className="graph_header">
-            <p className="graph_name">Normal</p>
-            <img src="" alt="" className="graph_icon1" />1
-            <img src="" alt="" className="graph_icon1" />2
-            <img src="" alt="" className="graph_icon1" />2
-            <img src="" alt="" className="graph_icon1" />4
-            <img src="" alt="" className="graph_icon1" />5
-            <img src="" alt="" className="graph_icon1" />6
-            <img src="" alt="" className="graph_icon1" />7
-            <img src="" alt="" className="graph_icon1" />8
-            <img src="" alt="" className="graph_icon1" />9
-            <img src="" alt="" className="graph_icon1" />
-            10
-            <img src="" alt="" className="graph_icon1" />
-            11
-            <img src="" alt="" className="graph_icon1" />
-            12
-            <img src="" alt="" className="graph_icon1" />
-            13
-            <img src="" alt="" className="graph_icon1" />
-            14
-            <img src="" alt="" className="graph_icon1" />
-            15
-          </div> */}
-
           <div className="graph_section">
             <div className="graph_mail">
               <p className="graph_from_p">From:</p>
-              <p className="graph_from_email">&nbsp;henrymark@email.com</p>
+              <p className="graph_from_email">&nbsp;{user?.user?.email}</p>
             </div>
             <div className="graph_mail">
               <p className="graph_from_p">Subject: </p>
-              <p className="graph_from_email">&nbsp;Subscription renewal</p>
+              <p className="graph_from_email">&nbsp;{user?.subject}</p>
             </div>
             <div className="graph_mail">
               <p className="graph_from_p">Message:</p>
             </div>
-            <p className="graph_content">
-              Lorem ipsum dolor commodi voluptas dolor, natus nam earum nisi saepe molestiae,
-              facilis adipisci possimus? Exercitationem tempore sit nisi! Quasi ea rerum
-              voluptatibus suscipit at natus! Autem provident, debitis reiciendis, eius mollitia
-              quibusdam dolore expedita pariatur dolor deleniti distinctio ratione laudantium amet
-              sit blanditiis temporibus perferendis ex at odit! Corporis ullam nemo laboriosam
-              praesentium neque facilis illo, voluptatem numquam saepe fugit alias vel harum,
-              cupiditate porro ex? Tempore non odit veniam adipisci voluptates suscipit nemo
-              obcaecati dolorem voluptate. Facilis, distinctio sint. Molestiae ipsam soluta est,
-              sequi, commodi eius eveniet provident aliquid perferendis voluptas eaque accusamus eos
-              blanditiis sit. Minus corporis quia beatae in, expedita molestias cumque, culpa totam
-              debitis facere corrupti soluta quibusdam eveniet.
-            </p>
+            <p className="graph_content">{user?.message}</p>
             <div className="graph_response">
               <p className="graph_from_p">Response</p>
               <div
                 ref={quillRef}
                 style={{ height: '300px', marginBottom: '10px', backgroundColor: 'white' }}
               ></div>
-              {/* <textarea
-                name=""
-                id=""
-                className="graph_textArea"
-                placeholder="Type your response here..."
-              ></textarea> */}
             </div>
             <div className="graph_buttons_div">
               <button type="button" className="graph_btn">
                 Clear
               </button>
-              <button type="button" className="graph_btn2">
+              <button onClick={handleSend} type="button" className="graph_btn2">
                 Send
               </button>
             </div>

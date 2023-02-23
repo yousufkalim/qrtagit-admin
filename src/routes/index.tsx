@@ -5,7 +5,7 @@ import Subscriptions from '../components/Subscriptions/Subscriptions';
 import Feedback from '../components/Feedback/Feedback';
 import Analytics from '../components/Analytice/Analytics';
 import Percentage from '../components/Percentage/Percentage';
-// import PrivateRoute from './PrivateRoute';
+import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Login from '../components/Login/Login';
 
@@ -34,61 +34,61 @@ const routes: Route[] = [
   {
     path: '/',
     element: (
-      <PublicRoute>
+      <PrivateRoute>
         <SideBar>
           <Users />
         </SideBar>
-      </PublicRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: '/users',
     element: (
-      <PublicRoute>
+      <PrivateRoute>
         <SideBar>
           <Users />
         </SideBar>
-      </PublicRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: '/subscriptions',
     element: (
-      <PublicRoute>
+      <PrivateRoute>
         <SideBar>
           <Subscriptions />
         </SideBar>
-      </PublicRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: '/feedback',
     element: (
-      <PublicRoute>
+      <PrivateRoute>
         <SideBar>
           <Feedback />
         </SideBar>
-      </PublicRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: '/analytics',
     element: (
-      <PublicRoute>
+      <PrivateRoute>
         <SideBar>
           <Analytics />
         </SideBar>
-      </PublicRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: '/percentage',
     element: (
-      <PublicRoute>
+      <PrivateRoute>
         <SideBar>
           <Percentage />
         </SideBar>
-      </PublicRoute>
+      </PrivateRoute>
     ),
   },
   {

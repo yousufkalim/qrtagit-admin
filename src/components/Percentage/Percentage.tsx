@@ -9,14 +9,20 @@ const Percentage: FC = () => {
         <div className="label_input">
           <label>Referral Discount</label>
           <div className="input_feild_outer">
-            <p>% |</p>
+            <div className="percentage_ptag">
+              <div>% </div>
+              <div>|</div>
+            </div>
             <input className="input_feild" type="text" name="" id="" />
           </div>
         </div>
         <div className="label_input">
           <label>Sender Discount</label>
           <div className="input_feild_outer">
-            <p>% |</p>
+            <div className="percentage_ptag">
+              <div>% </div>
+              <div>|</div>
+            </div>
             <input className="input_feild" type="text" name="" id="" />
           </div>
         </div>

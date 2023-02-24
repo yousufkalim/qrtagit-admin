@@ -2,15 +2,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FC, useState } from 'react';
 import '../Login/Login.css';
+import api from '../../api/request';
+import { useNavigate } from 'react-router-dom';
 
 const Login: FC = () => {
-  const [userFrom, setUserForm] = useState<any>({
-    Username: '',
+  const [user, setUser] = useState<any>({
+    username: '',
     password: '',
   });
-  // const handleChange = (e: any) => void {
-  //   setUserForm(e.target.value);
-  // };
+  const handleInput = (e: any): any => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  const navigate = useNavigate();
+
+  const handleSubmit = (): any => {
+    try {
+      void api('post', '/admin/get-token/', user).then((res) => {
+        localStorage.setItem('token', res.token);
+        navigate('/');
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div>
       <div className="Login_main">
@@ -19,23 +34,23 @@ const Login: FC = () => {
             <p className="login_title"> LOGIN</p>
             <input
               type="text"
-              name="Username"
-              value={userFrom.Username}
+              name="username"
+              value={user.username}
               className="login_input"
               placeholder="Username"
-              onChange={(e) => setUserForm(e.target.value)}
+              onChange={handleInput}
             />
             <input
-              type="text"
+              type="password"
               name="password"
-              value={userFrom.password}
+              value={user.password}
               className="login_input"
               placeholder="Password"
-              onChange={(e) => setUserForm(e.target.value)}
+              onChange={handleInput}
             />
             <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
             <label htmlFor="vehicle1">&nbsp;Remember me</label>
-            <button className="login_btn" type="button">
+            <button className="login_btn" type="button" onClick={handleSubmit}>
               LOGIN
             </button>
           </div>

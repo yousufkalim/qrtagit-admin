@@ -27,7 +27,7 @@ import logout from '../../assets/sideBar/logout.svg';
 import notifications from '../../assets/sideBar/notifications.svg';
 import downArrow from '../../assets/sideBar/arrowDown.svg';
 import './SideBar.css';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 const drawerWidth = 240;
 
 const routesArray = [
@@ -90,12 +90,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-const buttonSX = {
-  '&:hover': {
-    borderLeft: '3px solid white',
-  },
-};
-
 const SideBar: FC<SideBarProps> = (props) => {
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
@@ -103,11 +97,14 @@ const SideBar: FC<SideBarProps> = (props) => {
   const path = location.pathname;
 
   const headerName = routesArray.find((route) => route.path === path);
-
+  const navigate = useNavigate();
   const handleDrawerOpen = (): void => {
     setOpen(true);
   };
-
+  const handleLogout = (): void => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
   const handleDrawerClose = (): void => {
     setOpen(false);
   };
@@ -207,7 +204,7 @@ const SideBar: FC<SideBarProps> = (props) => {
               key={item.name}
             >
               <ListItem disablePadding className={`${item.path === path ? 'sideBarcolor' : ''}`}>
-                <ListItemButton sx={buttonSX}>
+                <ListItemButton>
                   <ListItemIcon sx={{ minWidth: '40px' }}>
                     <img
                       src={
@@ -240,8 +237,8 @@ const SideBar: FC<SideBarProps> = (props) => {
           }}
         >
           {['Logout'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton sx={buttonSX}>
+            <ListItem key={text} disablePadding onClick={handleLogout}>
+              <ListItemButton>
                 <ListItemIcon sx={{ minWidth: '40px' }}>
                   <img src={logout} alt="logout" />
                 </ListItemIcon>

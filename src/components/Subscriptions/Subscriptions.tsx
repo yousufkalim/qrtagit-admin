@@ -1,5 +1,5 @@
 import { Avatar, TextField } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import './Subscriptions.css';
-import edit from '../../assets/Subscription/edit.svg';
+import editImg from '../../assets/Subscription/edit.svg';
 
 const arrayIs = [
   { name: 'john', email: 'john@gmail.com' },
@@ -18,28 +18,80 @@ const arrayIs = [
   { name: 'john3', email: 'john3@gmail.com' },
 ];
 const Subscriptions: FC = () => {
+  const [packages, setPackages] = useState<any>({
+    packageDescription: '',
+    freePeriod: '',
+  });
+  const [edit, setEdit] = useState(false);
+
+  const handleEdit = (): void => {
+    setEdit(true);
+  };
+  const handleSave = (): void => {
+    setEdit(false);
+    setPackages({ ...packages });
+  };
+  const handleInput = (e: any): void => {
+    setPackages({ ...packages, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="white-canvas">
       <div className="all-packages">
-        <div className="package-box">
-          <div className="header-div">Package 1</div>
-          <div className="below-header">
-            <div>
-              <h2 className="heading">Package Description</h2>
-              <TextField fullWidth />
+        {edit ? (
+          <div className="package-box">
+            <div className="header-div">Package 1</div>
+            <div className="below-header">
+              <div>
+                <h2 className="heading">Package Description</h2>
+                <TextField
+                  name="packageDescription"
+                  value={packages.packageDescription}
+                  onChange={handleInput}
+                  fullWidth
+                />
+              </div>
+              <div>
+                <h2 className="heading">Free period</h2>
+                <TextField
+                  name="freePeriod"
+                  value={packages.freePeriod}
+                  onChange={handleInput}
+                  fullWidth
+                  placeholder="2 months"
+                />
+              </div>
+              <button onClick={handleSave} className="saveBtn">
+                Save
+              </button>
             </div>
-            <div>
-              <h2 className="heading">Free period</h2>
-              <TextField fullWidth placeholder="2 months" />
-            </div>
-            <button className="saveBtn">Save</button>
           </div>
-        </div>
+        ) : (
+          <div className="package-box">
+            <div className="header-div">
+              Package 1
+              <div>
+                <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit} alt="" />
+              </div>
+            </div>
+            <div className="below-header">
+              <div>
+                <h2 className="heading">Package Description</h2>
+                <span className="description">{packages.packageDescription}</span>
+              </div>
+              <div className="divider"></div>
+              <div>
+                <h2 className="heading">Free period</h2>
+                <span className="description">{packages.freePeriod}</span>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="package-box">
           <div className="header-div">
             Package 2
             <div>
-              <img src={edit} alt="" />
+              <img src={editImg} alt="" />
             </div>
           </div>
           <div className="below-header">
@@ -61,7 +113,7 @@ const Subscriptions: FC = () => {
           <div className="header-div">
             Package 3
             <div>
-              <img src={edit} alt="" />
+              <img src={editImg} alt="" />
             </div>
           </div>
           <div className="below-header">

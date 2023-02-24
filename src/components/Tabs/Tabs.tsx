@@ -158,14 +158,19 @@ export default function BasicTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="All users (1k)" {...a11yProps(0)} />
-          <Tab label="User type 1 (700)" {...a11yProps(1)} />
-          <Tab label="User type 2 (300)" {...a11yProps(2)} />
-          <Tab label="Flagged users (20)" {...a11yProps(3)} />
-          <Tab label="Blocked users (15)" {...a11yProps(4)} />
+          <Tab className="tab_li" label="All users (1k)" {...a11yProps(0)} />
+          <Tab className="tab_li" label="User type 1 (700)" {...a11yProps(1)} />
+          <Tab className="tab_li" label="User type 2 (300)" {...a11yProps(2)} />
+          <Tab className="tab_li" label="Flagged users (20)" {...a11yProps(3)} />
+          <Tab className="tab_li" label="Blocked users (15)" {...a11yProps(4)} />
         </Tabs>
         <div className="search-bar">
-          <TextField sx={{ width: '100%' }} type="Search" placeholder="Search User" />
+          <TextField
+            className="input_field"
+            sx={{ width: '100%' }}
+            type="Search"
+            placeholder="Search User"
+          />
           <img className="search-icon" src={search} alt="search" />
         </div>
       </Box>

@@ -3,7 +3,7 @@ import SideBar from '../components/SideBar/SideBar';
 import Users from '../components/Users/Users';
 import Subscriptions from '../components/Subscriptions/Subscriptions';
 import Feedback from '../components/Feedback/Feedback';
-import Analytics from '../components/Analytice/Analytics';
+import Analytics from '../components/Analytics/Analytics';
 import Percentage from '../components/Percentage/Percentage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';

@@ -25,6 +25,18 @@ const Percentage: FC = () => {
               onChange={handleInput}
             />
           </div>
+        </div>
+        <div className="label_input">
+          <label>Sender Discount</label>
+          <div className="input_feild_outer">
+            <p>% |</p>
+            <input
+              className="input_feild"
+              type="tel"
+              name="senderDiscount"
+              value={percentage.senderDiscount}
+              onChange={handleInput}
+            />
           <div className="label_input">
             <label>Sender Discount</label>
             <div className="input_feild_outer">

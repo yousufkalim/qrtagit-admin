@@ -1,0 +1,69 @@
+.mainDiv {
+  background-color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 10px 10px 0px 0px;
+}
+.maincardsDiv {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+.cardDiv {
+  width: 100%;
+  margin: 5px;
+  padding: 30px;
+  background: rgba(115, 87, 246, 0.08);
+  border-radius: 16.7969px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.description {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14.6973px;
+  color: #1c1c1c;
+}
+.figure {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 25.1953px;
+  color: #1c1c1c;
+}
+.percentage-div {
+  display: flex;
+  height: fit-content;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 4px;
+}
+.profit {
+  font-weight: 300;
+  font-size: 12.5977px;
+  color: #0e9a0c;
+}
+.loss {
+  color: #f23939;
+}
+.blue {
+  background: rgba(132, 187, 240, 0.24);
+}
+.yellow {
+  background: rgba(240, 189, 88, 0.27);
+}
+.green {
+  background: rgba(151, 223, 216, 0.3);
+}
+.line-chart {
+  width: 75%;
+  margin: 3% 0;
+}
+.bar-chart {
+  width: 50%;
+}
+.canvas {
+  background: #ffffff;
+  border: 1.0498px solid #eeecec;
+  border-radius: 16.7969px;
+  padding: 10px;
+}

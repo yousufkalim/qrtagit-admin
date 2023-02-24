@@ -35,8 +35,6 @@ const Subscriptions: FC = () => {
   const [edit2, setEdit2] = useState(false);
   const [edit3, setEdit3] = useState(false);
 
-
-
   const handleEdit = (): void => {
     setEdit(true);
   };
@@ -46,7 +44,6 @@ const Subscriptions: FC = () => {
   const handleEdit3 = (): void => {
     setEdit3(true);
   };
-
 
   const handleSave = (): void => {
     setEdit(false);
@@ -110,16 +107,6 @@ const Subscriptions: FC = () => {
                 <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit} alt="" />
               </div>
             </div>
-            </div>
-          </div>
-        ) : (
-          <div className="package-box">
-            <div className="header-div">
-              Package 1
-              <div>
-                <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit} alt="" />
-              </div>
-            </div>
             <div className="below-header">
               <div>
                 <h2 className="heading">Package Description</h2>
@@ -135,13 +122,13 @@ const Subscriptions: FC = () => {
         )}
         {edit2 ? (
           <div className="package-box">
-            <div className="header-div">Package 2</div>
+            <div className="header-div">Package 1</div>
             <div className="below-header">
               <div>
                 <h2 className="heading">Package Description</h2>
                 <TextField
                   name="packageDescription"
-                  value={packages2.packageDescription}
+                  value={packages.packageDescription}
                   onChange={handleInput2}
                   fullWidth
                 />
@@ -164,7 +151,7 @@ const Subscriptions: FC = () => {
         ) : (
           <div className="package-box">
             <div className="header-div">
-              Package 2
+              Package 1
               <div>
                 <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit2} alt="" />
               </div>
@@ -177,14 +164,14 @@ const Subscriptions: FC = () => {
               <div className="divider"></div>
               <div>
                 <h2 className="heading">Free period</h2>
-                <span className="description">{packages2.freePeriod}</span>
+                <span className="description">{packages.freePeriod}</span>
               </div>
             </div>
           </div>
         )}
         {edit3 ? (
           <div className="package-box">
-            <div className="header-div">Package 3</div>
+            <div className="header-div">Package 1</div>
             <div className="below-header">
               <div>
                 <h2 className="heading">Package Description</h2>
@@ -232,38 +219,40 @@ const Subscriptions: FC = () => {
           </div>
         )}
       </div>
-      <div className="total-users">
-        <span>Package 1</span>
-        <div className="grey-circle"></div>
-        <span>100 users</span>
-      </div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {arrayIs.map((row) => (
-              <TableRow key={row.email}>
-                <TableCell>
-                  <div className="row">
-                    <Avatar alt={row.name} src="" />
-                    <h3>{row.name}</h3>
-                  </div>
-                </TableCell>
-                <TableCell>{row.email}</TableCell>
+      <div>
+        <div className="total-users">
+          <span>Package 1</span>
+          <div className="grey-circle"></div>
+          <span>100 users</span>
+        </div>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {arrayIs.map((row) => (
+                <TableRow key={row.email}>
+                  <TableCell>
+                    <div className="row">
+                      <Avatar alt={row.name} src="" />
+                      <h3>{row.name}</h3>
+                    </div>
+                  </TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };

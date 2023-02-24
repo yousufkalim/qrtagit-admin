@@ -22,6 +22,7 @@ const Subscriptions: FC = () => {
     packageDescription: '',
     freePeriod: '',
   });
+
   const [packages2, setPackages2] = useState<any>({
     packageDescription: '',
     freePeriod: '',
@@ -34,6 +35,8 @@ const Subscriptions: FC = () => {
   const [edit2, setEdit2] = useState(false);
   const [edit3, setEdit3] = useState(false);
 
+
+
   const handleEdit = (): void => {
     setEdit(true);
   };
@@ -43,10 +46,13 @@ const Subscriptions: FC = () => {
   const handleEdit3 = (): void => {
     setEdit3(true);
   };
+
+
   const handleSave = (): void => {
     setEdit(false);
     setPackages({ ...packages });
   };
+
   const handleSave2 = (): void => {
     setEdit2(false);
     setPackages2({ ...packages2 });
@@ -94,6 +100,16 @@ const Subscriptions: FC = () => {
               <button onClick={handleSave} className="saveBtn">
                 Save
               </button>
+            </div>
+          </div>
+        ) : (
+          <div className="package-box">
+            <div className="header-div">
+              Package 1
+              <div>
+                <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit} alt="" />
+              </div>
+            </div>
             </div>
           </div>
         ) : (

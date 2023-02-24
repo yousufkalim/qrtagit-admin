@@ -24,7 +24,6 @@ const Percentage: FC = () => {
               value={percentage.referralDiscount}
               onChange={handleInput}
             />
-          </div>
         </div>
         <div className="label_input">
           <label>Sender Discount</label>
@@ -37,7 +36,6 @@ const Percentage: FC = () => {
               value={percentage.senderDiscount}
               onChange={handleInput}
             />
-          </div>
         </div>
         <button className="Save_btn">Save</button>
       </div>

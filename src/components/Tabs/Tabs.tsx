@@ -115,6 +115,12 @@ export default function BasicTabs() {
   const handleClose = (): void => {
     setAnchorEl(null);
   };
+
+  // const styles = (): any => ({
+  //   input: {
+  //     marginLeft: '20px',
+  //   },
+  // });
   return (
     <Box sx={{ width: '100%' }}>
       <Menu
@@ -167,6 +173,7 @@ export default function BasicTabs() {
         <div className="search-bar">
           <TextField
             className="input_field"
+            inputProps={{ sx: { marginLeft: '20px' } }}
             sx={{ width: '100%' }}
             type="Search"
             placeholder="Search User"

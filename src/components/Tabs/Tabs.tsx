@@ -115,6 +115,12 @@ export default function BasicTabs() {
   const handleClose = (): void => {
     setAnchorEl(null);
   };
+
+  // const styles = (): any => ({
+  //   input: {
+  //     marginLeft: '20px',
+  //   },
+  // });
   return (
     <Box sx={{ width: '100%' }}>
       <Menu
@@ -165,7 +171,12 @@ export default function BasicTabs() {
           <Tab label="Blocked users (15)" {...a11yProps(4)} />
         </Tabs>
         <div className="search-bar">
-          <TextField sx={{ width: '100%' }} type="Search" placeholder="Search User" />
+          <TextField
+            inputProps={{ sx: { marginLeft: '20px' } }}
+            sx={{ width: '100%' }}
+            type="Search"
+            placeholder="Search User"
+          />
           <img className="search-icon" src={search} alt="search" />
         </div>
       </Box>

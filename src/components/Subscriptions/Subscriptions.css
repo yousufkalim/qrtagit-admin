@@ -59,8 +59,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 14%;
+  width: fit-content;
   margin: 25px 0 10px 0;
+  gap: 5px;
 }
 .grey-circle {
   width: 4px;

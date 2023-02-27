@@ -1,8 +1,9 @@
 .percentage {
   background-color: #fff;
-  border-radius: 12px;
-  padding: 12px 22px 25px 12px;
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px 20px;
   width: 400px;
+  margin: 10px;
 }
 .percentage_center {
   display: flex;
@@ -38,6 +39,8 @@
   padding: 4%;
   border-radius: 6px;
   color: white;
+  width: 100%;
+  margin-top: 20px;
 }
 .percentage_ptag {
   display: flex;

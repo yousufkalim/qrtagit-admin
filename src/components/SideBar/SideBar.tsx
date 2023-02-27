@@ -31,7 +31,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 const drawerWidth = 240;
 
 const routesArray = [
-  { name: 'Users', path: '/users' },
+  { name: 'Users', path: '/' },
   { name: 'Subscriptions', path: '/subscriptions' },
   { name: 'Feedback', path: '/feedback' },
   { name: 'Analytics', path: '/analytics' },

@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
 import SideBar from '../components/SideBar/SideBar';
-import Users from '../components/Users/Users';
-import Subscriptions from '../components/Subscriptions/Subscriptions';
-import Feedback from '../components/Feedback/Feedback';
-import Analytics from '../components/Analytics/Analytics';
-import Percentage from '../components/Percentage/Percentage';
+import Users from '../Pages/Home';
+import Subscriptions from '../Pages/Subscriptions';
+import Feedback from '../Pages/Feedback';
+import Analytics from '../Pages/Analytics';
+import Percentage from '../Pages/Percentage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import Login from '../components/Login/Login';
+import Login from '../Pages/Login';
 
 // Types
 interface BaseRoute {
@@ -33,16 +33,6 @@ type Route = Element | Navigate;
 const routes: Route[] = [
   {
     path: '/',
-    element: (
-      <PrivateRoute>
-        <SideBar>
-          <Users />
-        </SideBar>
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: '/users',
     element: (
       <PrivateRoute>
         <SideBar>

@@ -8,6 +8,7 @@ import moment from 'moment';
 
 import ProfileBg from '../../assets/ProfileBg.png';
 import './Feedback.css';
+import { toast } from 'react-toastify';
 
 interface ILooserObject {
   address: string;
@@ -71,6 +72,7 @@ const Feedback: FC = () => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     getAllFeedbacks();
     if (quillRef.current) {
@@ -107,17 +109,21 @@ const Feedback: FC = () => {
       console.log(data, 'data');
       request<IResponse>('post', '/admin/feedback-reply/', data)
         .then((res) => {
+          toast.success('Response sent');
           getAllFeedbacks();
           console.log('response ', res);
+          quil.setText('');
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err, 'catch');
+          toast.error(err.response?.data?.message[0]);
         });
     }
   };
 
   const handleClickUser = (val: IResponseUser): void => {
     setUser(val);
+    quil.setText('');
   };
   console.log(user, 'user');
   return (
@@ -176,7 +182,7 @@ const Feedback: FC = () => {
               ></div>
             </div>
             <div className="graph_buttons_div">
-              <button type="button" className="graph_btn">
+              <button onClick={() => quil.setText('')} type="button" className="graph_btn">
                 Clear
               </button>
               <button onClick={handleSend} type="button" className="graph_btn2">

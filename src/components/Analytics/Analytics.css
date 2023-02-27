@@ -2,6 +2,7 @@
   background-color: #ffffff;
   padding: 10px 20px;
   border-radius: 10px 10px 0px 0px;
+  margin: 10px;
 }
 .maincardsDiv {
   display: flex;
@@ -10,7 +11,6 @@
 }
 .cardDiv {
   width: 100%;
-  margin: 5px;
   padding: 30px;
   background: rgba(115, 87, 246, 0.08);
   border-radius: 16.7969px;

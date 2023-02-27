@@ -203,8 +203,8 @@ export default function BasicTabs() {
                     </div>
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>Package 1</TableCell>
+                  <TableCell>10%</TableCell>
                   <TableCell>
                     <img
                       style={{ cursor: 'pointer' }}

@@ -1,4 +1,4 @@
-import { Avatar, TextField } from '@mui/material';
+import { Avatar } from '@mui/material';
 import React, { FC, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,7 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import './Subscriptions.css';
-import editImg from '../../assets/Subscription/edit.svg';
+import PackageBox from './PackageBox';
+import { toast } from 'react-toastify';
 
 const arrayIs = [
   { name: 'john', email: 'john@gmail.com' },
@@ -22,7 +23,6 @@ const Subscriptions: FC = () => {
     packageDescription: '',
     freePeriod: '',
   });
-
   const [packages2, setPackages2] = useState<any>({
     packageDescription: '',
     freePeriod: '',
@@ -31,7 +31,8 @@ const Subscriptions: FC = () => {
     packageDescription: '',
     freePeriod: '',
   });
-  const [edit, setEdit] = useState(false);
+
+  const [edit, setEdit] = useState<boolean>(false);
   const [edit2, setEdit2] = useState(false);
   const [edit3, setEdit3] = useState(false);
 
@@ -46,18 +47,26 @@ const Subscriptions: FC = () => {
   };
 
   const handleSave = (): void => {
-    setEdit(false);
-    setPackages({ ...packages });
+    if (packages.packageDescription && packages.freePeriod) {
+      setEdit(false);
+      setPackages({ ...packages });
+    } else toast.error('Fields cannot be empty');
   };
 
   const handleSave2 = (): void => {
-    setEdit2(false);
-    setPackages2({ ...packages2 });
+    if (packages2.packageDescription && packages2.freePeriod) {
+      setEdit2(false);
+      setPackages2({ ...packages2 });
+    } else toast.error('Fields cannot be empty');
   };
+
   const handleSave3 = (): void => {
-    setEdit3(false);
-    setPackages3({ ...packages3 });
+    if (packages3.packageDescription && packages3.freePeriod) {
+      setEdit3(false);
+      setPackages3({ ...packages3 });
+    } else toast.error('Fields cannot be empty');
   };
+
   const handleInput = (e: any): void => {
     setPackages({ ...packages, [e.target.name]: e.target.value });
   };
@@ -71,153 +80,39 @@ const Subscriptions: FC = () => {
   return (
     <div className="white-canvas">
       <div className="all-packages">
-        {edit ? (
-          <div className="package-box">
-            <div className="header-div">Package 1</div>
-            <div className="below-header">
-              <div>
-                <h2 className="heading">Package Description</h2>
-                <TextField
-                  name="packageDescription"
-                  value={packages.packageDescription}
-                  onChange={handleInput}
-                  fullWidth
-                />
-              </div>
-              <div>
-                <h2 className="heading">Free period</h2>
-                <TextField
-                  name="freePeriod"
-                  value={packages.freePeriod}
-                  onChange={handleInput}
-                  fullWidth
-                  placeholder="2 months"
-                />
-              </div>
-              <button onClick={handleSave} className="saveBtn">
-                Save
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="package-box">
-            <div className="header-div">
-              Package 1
-              <div>
-                <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit} alt="" />
-              </div>
-            </div>
-            <div className="below-header">
-              <div>
-                <h2 className="heading">Package Description</h2>
-                <span className="description">{packages.packageDescription}</span>
-              </div>
-              <div className="divider"></div>
-              <div>
-                <h2 className="heading">Free period</h2>
-                <span className="description">{packages.freePeriod}</span>
-              </div>
-            </div>
-          </div>
-        )}
-        {edit2 ? (
-          <div className="package-box">
-            <div className="header-div">Package 1</div>
-            <div className="below-header">
-              <div>
-                <h2 className="heading">Package Description</h2>
-                <TextField
-                  name="packageDescription"
-                  value={packages.packageDescription}
-                  onChange={handleInput2}
-                  fullWidth
-                />
-              </div>
-              <div>
-                <h2 className="heading">Free period</h2>
-                <TextField
-                  name="freePeriod"
-                  value={packages2.freePeriod}
-                  onChange={handleInput2}
-                  fullWidth
-                  placeholder="2 months"
-                />
-              </div>
-              <button onClick={handleSave2} className="saveBtn">
-                Save
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="package-box">
-            <div className="header-div">
-              Package 1
-              <div>
-                <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit2} alt="" />
-              </div>
-            </div>
-            <div className="below-header">
-              <div>
-                <h2 className="heading">Package Description</h2>
-                <span className="description">{packages2.packageDescription}</span>
-              </div>
-              <div className="divider"></div>
-              <div>
-                <h2 className="heading">Free period</h2>
-                <span className="description">{packages.freePeriod}</span>
-              </div>
-            </div>
-          </div>
-        )}
-        {edit3 ? (
-          <div className="package-box">
-            <div className="header-div">Package 1</div>
-            <div className="below-header">
-              <div>
-                <h2 className="heading">Package Description</h2>
-                <TextField
-                  name="packageDescription"
-                  value={packages3.packageDescription}
-                  onChange={handleInput3}
-                  fullWidth
-                />
-              </div>
-              <div>
-                <h2 className="heading">Free period</h2>
-                <TextField
-                  name="freePeriod"
-                  value={packages3.freePeriod}
-                  onChange={handleInput3}
-                  fullWidth
-                  placeholder="2 months"
-                />
-              </div>
-              <button onClick={handleSave3} className="saveBtn">
-                Save
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="package-box">
-            <div className="header-div">
-              Package 1
-              <div>
-                <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit3} alt="" />
-              </div>
-            </div>
-            <div className="below-header">
-              <div>
-                <h2 className="heading">Package Description</h2>
-                <span className="description">{packages3.packageDescription}</span>
-              </div>
-              <div className="divider"></div>
-              <div>
-                <h2 className="heading">Free period</h2>
-                <span className="description">{packages3.freePeriod}</span>
-              </div>
-            </div>
-          </div>
-        )}
+        <PackageBox
+          heading="Package 1"
+          onChange={handleInput}
+          handleSave={handleSave}
+          handleEdit={handleEdit}
+          packageDescription={packages.packageDescription}
+          freePeriodDescription={packages.freePeriod}
+          valueFreePeriod={packages.freePeriod}
+          valuePackageDescription={packages.packageDescription}
+          edit={edit}
+        />
+        <PackageBox
+          heading="Package 2"
+          onChange={handleInput2}
+          handleSave={handleSave2}
+          handleEdit={handleEdit2}
+          packageDescription={packages2.packageDescription}
+          freePeriodDescription={packages2.freePeriod}
+          valueFreePeriod={packages2.freePeriod}
+          valuePackageDescription={packages2.packageDescription}
+          edit={edit2}
+        />
+        <PackageBox
+          heading="Package 3"
+          onChange={handleInput3}
+          handleSave={handleSave3}
+          handleEdit={handleEdit3}
+          packageDescription={packages3.packageDescription}
+          freePeriodDescription={packages3.freePeriod}
+          valueFreePeriod={packages3.freePeriod}
+          valuePackageDescription={packages3.packageDescription}
+          edit={edit3}
+        />
       </div>
       <div>
         <div className="total-users">

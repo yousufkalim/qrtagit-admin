@@ -97,3 +97,19 @@
   height: 100%;
   width: 48%;
 }
+
+.map_progress_container {
+  height: 300px;
+  margin-top: 20px;
+  overflow-y: auto;
+  padding-inline: 20px;
+}
+.map_progress_content {
+  margin-block: 15px;
+}
+
+.map_progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

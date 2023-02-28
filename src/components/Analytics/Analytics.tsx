@@ -4,6 +4,7 @@ import riseArrow from '../../assets/Analytics/ArrowRise.svg';
 import fallArrow from '../../assets/Analytics/ArrowFall.svg';
 import Chart from 'chart.js/auto';
 import './Analytics.css';
+import MapChart from '../MapChart';
 
 const doughnutData = {
   labels: [
@@ -389,7 +390,9 @@ const Analytics: FC = () => {
           <div className="line-chart">
             <canvas className="canvas" ref={chartRef} />
           </div>
-          <div className="map-chart">{/* <MapChart /> */}</div>
+          <div className="map-chart">
+            <MapChart />
+          </div>
         </div>
 
         <div className="charts_bottom">

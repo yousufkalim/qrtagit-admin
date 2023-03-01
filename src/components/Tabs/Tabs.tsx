@@ -12,16 +12,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import request from '../../api/request';
+import AllUsersTab from './AllUsersTab';
+import BlockedUsersTab from './BlockedUsersTab';
 
 import './tabs.css';
 import Avatar from '@material-ui/core/Avatar/Avatar';
 import blackDots from '../../assets/tabs/BlackDots.svg';
 import search from '../../assets/tabs/Search.svg';
-import flag from '../../assets/tabs/Flag.svg';
-import block from '../../assets/tabs/Block.svg';
+import { toast } from 'react-toastify';
+import FlaggedUsersTab from './FlaggedUsersTab';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -88,8 +88,14 @@ function a11yProps(index: number) {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export default function BasicTabs() {
   const [users, setUsers] = useState<IResponceUser[]>([]);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [blockedUsers, setBlockedUsers] = useState<IResponceUser[]>([]);
+  const [flaggedUsers, setFlaggedUsers] = useState<IResponceUser[]>([]);
+  const [blocked, setBlocked] = useState<boolean>(false);
+  const [flagged, setFlagged] = useState<boolean>(false);
+  const [value, setValue] = React.useState(0);
 
-  useEffect(() => {
+  const getUsers = (): void => {
     request<IResponceUser[]>('get', '/admin/users/')
       .then((res) => {
         console.log(res, 'user');
@@ -98,58 +104,110 @@ export default function BasicTabs() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+  const getFlaggedUsers = (): void => {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    request<IResponceUser[]>('get', `/admin/users/?is_flagged=${flagged}`)
+      .then((res) => {
+        console.log(res);
+        setFlaggedUsers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getUnblockedUsers = (): void => {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    request<IResponceUser[]>('get', `/admin/users/?is_blocked=${blocked}`)
+      .then((res) => {
+        console.log(res);
+        setBlockedUsers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    getFlaggedUsers();
+  }, [flagged, value]);
+
+  useEffect(() => {
+    getUsers();
+  }, [value]);
+
+  useEffect(() => {
+    getUnblockedUsers();
+  }, [blocked, value]);
+
   console.log(users, 'userarray');
-  const [value, setValue] = React.useState(0);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    setAnchorEl(event.currentTarget);
+  console.log('VALUE ', value);
+
+  const handleBlock = (): void => {
+    if (userId) {
+      request('post', `/admin/users/${userId}/block/`)
+        .then((res) => {
+          console.log(res);
+          toast.success('Success');
+          getUsers();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error('Not Found');
+        });
+    }
   };
-  const handleClose = (): void => {
-    setAnchorEl(null);
+  const handleUnBlock = (): void => {
+    if (userId) {
+      request('post', `/admin/users/${userId}/unblock/`)
+        .then((res) => {
+          console.log(res);
+          toast.success('Success');
+          getUnblockedUsers();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error('Not Found');
+        });
+    }
+  };
+  const handleFlag = (): void => {
+    if (userId) {
+      request('post', `/admin/users/${userId}/flag/`)
+        .then((res) => {
+          console.log(res);
+          toast.success('Success');
+          getUsers();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error('Not Found');
+        });
+    }
+  };
+  const handleUnFlag = (): void => {
+    if (userId) {
+      request('post', `/admin/users/${userId}/remove-flag/`)
+        .then((res) => {
+          console.log(res);
+          toast.success('Success');
+          getFlaggedUsers();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error('Not Found');
+        });
+    }
   };
 
-  // const styles = (): any => ({
-  //   input: {
-  //     marginLeft: '20px',
-  //   },
-  // });
+  console.log('Blocked users ', blockedUsers);
+
   return (
     <Box sx={{ width: '100%' }}>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem sx={{ color: '#212121' }} onClick={handleClose}>
-          <div className="option-div">
-            <div>
-              <img src={flag} alt="flag" />
-            </div>
-            Flag
-          </div>
-        </MenuItem>
-        <div className="divider"></div>
-        <MenuItem sx={{ color: '#AF0909' }} onClick={handleClose}>
-          <div className="option-div">
-            <div>
-              <img src={block} alt="flag" />
-            </div>
-            Block
-          </div>
-        </MenuItem>
-      </Menu>
       <Box
         sx={{
           borderColor: 'divider',
@@ -167,8 +225,22 @@ export default function BasicTabs() {
           <Tab className="tab_li" label="All users (1k)" {...a11yProps(0)} />
           <Tab className="tab_li" label="User type 1 (700)" {...a11yProps(1)} />
           <Tab className="tab_li" label="User type 2 (300)" {...a11yProps(2)} />
-          <Tab className="tab_li" label="Flagged users (20)" {...a11yProps(3)} />
-          <Tab className="tab_li" label="Blocked users (15)" {...a11yProps(4)} />
+          <Tab
+            onClick={() => {
+              setFlagged(true);
+            }}
+            className="tab_li"
+            label="Flagged users (20)"
+            {...a11yProps(3)}
+          />
+          <Tab
+            onClick={() => {
+              setBlocked(true);
+            }}
+            className="tab_li"
+            label="Blocked users (15)"
+            {...a11yProps(4)}
+          />
         </Tabs>
         <div className="search-bar">
           <TextField
@@ -181,48 +253,14 @@ export default function BasicTabs() {
           <img className="search-icon" src={search} alt="search" />
         </div>
       </Box>
-      <TabPanel value={value} index={0}>
-        <TableContainer component={Paper} sx={{ height: '80vh' }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Subscription</TableCell>
-                <TableCell>Referral Discount</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.map((row) => (
-                <TableRow key={row.email}>
-                  <TableCell>
-                    <div className="row">
-                      <Avatar alt={row.name} src={row?.looser?.profile_picture} />
-                      <h3>{row.name}</h3>
-                    </div>
-                  </TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>Package 1</TableCell>
-                  <TableCell>10%</TableCell>
-                  <TableCell>
-                    <img
-                      style={{ cursor: 'pointer' }}
-                      id="basic-button"
-                      aria-controls={open ? 'basic-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? 'true' : undefined}
-                      onClick={handleClick}
-                      src={blackDots}
-                      alt=""
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </TabPanel>
+      <AllUsersTab
+        TabPanel={TabPanel}
+        users={users}
+        value={value}
+        setUserId={setUserId}
+        handleBlock={handleBlock}
+        handleFlag={handleFlag}
+      />
       <TabPanel value={value} index={1}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -245,10 +283,10 @@ export default function BasicTabs() {
                     </div>
                   </TableCell>
                   <TableCell>{row.email}</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>Package 1</TableCell>
+                  <TableCell>10%</TableCell>
                   <TableCell>
-                    <img src={blackDots} alt="" />
+                    <img style={{ cursor: 'pointer' }} src={blackDots} alt="" />
                   </TableCell>
                 </TableRow>
               ))}
@@ -289,72 +327,20 @@ export default function BasicTabs() {
           </Table>
         </TableContainer>
       </TabPanel>
-      <TabPanel value={value} index={3}>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Subscription</TableCell>
-                <TableCell>Referral Discount</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {arrayIs.map((row) => (
-                <TableRow key={row.email}>
-                  <TableCell>
-                    <div className="row">
-                      <Avatar alt={row.name} src={row.img} />
-                      <h3>{row.name}</h3>
-                    </div>
-                  </TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.pakage}</TableCell>
-                  <TableCell>{row.percentage}</TableCell>
-                  <TableCell>
-                    <img src={blackDots} alt="" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Subscription</TableCell>
-                <TableCell>Referral Discount</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {arrayIs.map((row) => (
-                <TableRow key={row.email}>
-                  <TableCell>
-                    <div className="row">
-                      <Avatar alt={row.name} src={row.img} />
-                      <h3>{row.name}</h3>
-                    </div>
-                  </TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.pakage}</TableCell>
-                  <TableCell>{row.percentage}</TableCell>
-                  <TableCell>
-                    <img src={blackDots} alt="" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </TabPanel>
+      <FlaggedUsersTab
+        handleUnFlag={handleUnFlag}
+        TabPanel={TabPanel}
+        flaggedUsers={flaggedUsers}
+        value={value}
+        setUserId={setUserId}
+      />
+      <BlockedUsersTab
+        TabPanel={TabPanel}
+        blockedUsers={blockedUsers}
+        value={value}
+        handleUnBlock={handleUnBlock}
+        setUserId={setUserId}
+      />
     </Box>
   );
 }

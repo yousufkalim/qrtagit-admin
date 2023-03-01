@@ -56,13 +56,19 @@
 }
 .charts_top {
   display: flex;
+  gap: 2%;
 }
 .map-chart {
   width: 25%;
+  border: 2.09961px solid #eeecec;
+  margin: 2% 0;
+  border-radius: 16.7969px;
 }
 .line-chart {
   width: 75%;
-  margin: 3% 0;
+  margin: 2% 0;
+  border: 2.09961px solid #eeecec;
+  border-radius: 16.7969px;
 }
 .bar-chart {
   width: 50%;
@@ -80,6 +86,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 20px;
   /* flex: 1 1; */
 }
 

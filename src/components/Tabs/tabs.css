@@ -6,11 +6,18 @@
   color: white !important;
   padding: 10px;
   border-radius: 2.5px;
+  min-height: 0 !important;
+}
+.css-19kzrtu {
+  padding: 10px 1px !important;
 }
 .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
   border-radius: 10px !important;
   width: 10%;
   padding: 10px 15px;
+}
+.tab_li {
+  min-height: 0 !important;
 }
 .css-1jwwn0q-MuiButtonBase-root-MuiMenuItem-root,
 .css-xra2ud-MuiButtonBase-root-MuiMenuItem-root {
@@ -74,7 +81,7 @@
   .tab_li {
     font-size: 10px !important;
     padding: 10px 6px !important;
-    min-height: 40px !important;
+    /* min-height: 40px !important; */
   }
   /* .input_field {
     font-size: 10px !important;

@@ -6,10 +6,10 @@ interface PackageBoxProps {
   onChange: any;
   handleSave: any;
   handleEdit: any;
-  packageDescription: any;
-  freePeriodDescription: any;
-  valueFreePeriod: any;
-  valuePackageDescription: any;
+  packageDescription: string;
+  freePeriodDescription: string;
+  valueFreePeriod: string;
+  valuePackageDescription: string;
   heading: string;
   edit: boolean;
 }
@@ -67,12 +67,12 @@ const PackageBox: FC<PackageBoxProps> = (props) => {
           <div className="below-header">
             <div>
               <h2 className="heading">Package Description</h2>
-              <span className="description">{packageDescription}</span>
+              <span className="pkg-description">{packageDescription}</span>
             </div>
             <div className="divider"></div>
             <div>
               <h2 className="heading">Free period</h2>
-              <span className="description">{freePeriodDescription}</span>
+              <span className="pkg-description">{freePeriodDescription}</span>
             </div>
           </div>
         </div>

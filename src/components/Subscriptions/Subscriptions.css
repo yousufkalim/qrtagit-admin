@@ -12,6 +12,8 @@
   height: fit-content;
 }
 .header-div {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
   background-color: #0c80a0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -42,6 +44,7 @@
   font-weight: 500;
   color: #212121;
   margin-bottom: 2px;
+  font-family: 'Inter', sans-serif;
 }
 .all-packages {
   display: flex;
@@ -51,10 +54,14 @@
   border-bottom: 1px solid #bababa;
   margin: 5px 0;
 }
-.description {
+.pkg-description {
   font-weight: 400;
   font-size: 14px;
   color: #323232;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
 }
 .total-users {
   display: flex;

@@ -221,7 +221,7 @@ const SideBar: FC<SideBarProps> = (props) => {
                       alt=""
                     />
                   </ListItemIcon>
-                  <ListItemText primary={item.name} />
+                  <ListItemText className="links-text" primary={item.name} />
                 </ListItemButton>
               </ListItem>
             </NavLink>
@@ -242,7 +242,7 @@ const SideBar: FC<SideBarProps> = (props) => {
                 <ListItemIcon sx={{ minWidth: '40px' }}>
                   <img src={logout} alt="logout" />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText className="links-text" primary={text} />
               </ListItemButton>
             </ListItem>
           ))}

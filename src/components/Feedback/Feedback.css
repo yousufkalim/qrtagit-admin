@@ -48,17 +48,35 @@
   margin-right: 10px;
 }
 .Feedback_user_name {
-  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  color: #212121;
 }
 .Feedback_user_email {
-  opacity: 0.8;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #605f5f;
 }
 .Feedback_content_p {
   padding-top: 7px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+
+  color: #323232;
 }
 .Feedback_msg {
-  font-weight: bold;
+  color: #212121;
   padding: 10px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
 }
 .graph_header {
   display: flex;

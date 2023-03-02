@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -12,18 +12,43 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import flag from '../../assets/tabs/Flag.svg';
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+interface IResponceUser {
+  email: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+  looser: ILooserObject;
+  name: string;
+  phone_number: string;
+  user_type: string;
+}
+interface ILooserObject {
+  address: string;
+  city: string;
+  id: number;
+  postal_code: string;
+  profile_picture: string;
+  state: string;
+  user: number;
+}
 interface FlaggedUsersProps {
-  TabPanel: any;
-  flaggedUsers: any;
-  value: any;
-  setUserId: any;
-  handleUnFlag: any;
+  TabPanel: (props: TabPanelProps) => ReactElement;
+  flaggedUsers: IResponceUser[];
+  value: number;
+  setUserId: (id: number | null) => void;
+  handleUnFlag: () => void;
 }
 
 const FlaggedUsersTab: FC<FlaggedUsersProps> = (props) => {
   const { TabPanel, flaggedUsers, value, handleUnFlag, setUserId } = props;
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLImageElement>, id: number): void => {
@@ -71,7 +96,7 @@ const FlaggedUsersTab: FC<FlaggedUsersProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {flaggedUsers.map(
+              {flaggedUsers?.map(
                 (row: {
                   id: number;
                   name: string;

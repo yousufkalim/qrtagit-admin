@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, ReactElement } from 'react';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -13,24 +13,45 @@ import MenuItem from '@mui/material/MenuItem';
 import flag from '../../assets/tabs/Flag.svg';
 import block from '../../assets/tabs/Block.svg';
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+interface IResponceUser {
+  email: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+  looser: ILooserObject;
+  name: string;
+  phone_number: string;
+  user_type: string;
+}
+interface ILooserObject {
+  address: string;
+  city: string;
+  id: number;
+  postal_code: string;
+  profile_picture: string;
+  state: string;
+  user: number;
+}
 interface AllUserTabProps {
-  TabPanel: any;
-  users: any;
-  value: any;
-  setUserId: any;
-  handleFlag: any;
-  handleBlock: any;
+  TabPanel: (props: TabPanelProps) => ReactElement;
+  users: IResponceUser[];
+  value: number;
+  setUserId: (id: number | null) => void;
+  handleFlag: () => void;
+  handleBlock: () => void;
 }
 
 const AllUsersTab: FC<AllUserTabProps> = (props) => {
   const { TabPanel, users, setUserId, value, handleFlag, handleBlock } = props;
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  console.log('Anchor ', anchorEl);
-
-  console.log('Open ', open);
 
   const flagHandler = (): void => {
     handleClose();
@@ -47,7 +68,6 @@ const AllUsersTab: FC<AllUserTabProps> = (props) => {
     setUserId(id);
   };
   const handleClose = (): void => {
-    console.log('Runs handle');
     setAnchorEl(null);
     setUserId(null);
   };
@@ -94,7 +114,7 @@ const AllUsersTab: FC<AllUserTabProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map(
+              {users?.map(
                 (row: {
                   id: number;
                   name: string;

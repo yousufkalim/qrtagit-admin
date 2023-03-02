@@ -49,6 +49,10 @@ interface IResponceUser {
   user_type: string;
 }
 
+interface IBlockUserResponse {
+  status: string;
+}
+
 const arrayIs = [
   { name: 'john', email: 'john@gmail.com', pakage: 'Pakege 1', percentage: '10%', img: 'img' },
   { name: 'john1', email: 'john1@gmail.com', pakage: 'Pakege 1', percentage: '10%', img: 'img' },
@@ -93,12 +97,11 @@ export default function BasicTabs() {
   const [flaggedUsers, setFlaggedUsers] = useState<IResponceUser[]>([]);
   const [blocked, setBlocked] = useState<boolean>(false);
   const [flagged, setFlagged] = useState<boolean>(false);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const getUsers = (): void => {
     request<IResponceUser[]>('get', '/admin/users/')
       .then((res) => {
-        console.log(res, 'user');
         setUsers(res);
       })
       .catch((err) => {
@@ -109,7 +112,6 @@ export default function BasicTabs() {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     request<IResponceUser[]>('get', `/admin/users/?is_flagged=${flagged}`)
       .then((res) => {
-        console.log(res);
         setFlaggedUsers(res);
       })
       .catch((err) => {
@@ -120,7 +122,6 @@ export default function BasicTabs() {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     request<IResponceUser[]>('get', `/admin/users/?is_blocked=${blocked}`)
       .then((res) => {
-        console.log(res);
         setBlockedUsers(res);
       })
       .catch((err) => {
@@ -129,82 +130,70 @@ export default function BasicTabs() {
   };
   useEffect(() => {
     getFlaggedUsers();
-  }, [flagged, value]);
+  }, [flagged]);
 
   useEffect(() => {
     getUsers();
-  }, [value]);
+  }, []);
 
   useEffect(() => {
     getUnblockedUsers();
-  }, [blocked, value]);
+  }, [blocked]);
 
-  console.log(users, 'userarray');
-
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
     setValue(newValue);
   };
-  console.log('VALUE ', value);
 
   const handleBlock = (): void => {
     if (userId) {
-      request('post', `/admin/users/${userId}/block/`)
+      request<IBlockUserResponse>('post', `/admin/users/${userId}/block/`)
         .then((res) => {
-          console.log(res);
-          toast.success('Success');
+          toast.success(res?.status);
           getUsers();
+          setBlocked(false);
         })
         .catch((err) => {
-          console.log(err);
-          toast.error('Not Found');
+          toast.error(err?.response?.data?.detail);
         });
     }
   };
   const handleUnBlock = (): void => {
     if (userId) {
-      request('post', `/admin/users/${userId}/unblock/`)
+      request<IBlockUserResponse>('post', `/admin/users/${userId}/unblock/`)
         .then((res) => {
-          console.log(res);
-          toast.success('Success');
+          toast.success(res?.status);
           getUnblockedUsers();
         })
         .catch((err) => {
-          console.log(err);
-          toast.error('Not Found');
+          toast.error(err?.response?.data?.detail);
         });
     }
   };
   const handleFlag = (): void => {
     if (userId) {
-      request('post', `/admin/users/${userId}/flag/`)
+      request<IBlockUserResponse>('post', `/admin/users/${userId}/flag/`)
         .then((res) => {
-          console.log(res);
-          toast.success('Success');
+          toast.success(res?.status);
           getUsers();
+          setFlagged(false);
         })
         .catch((err) => {
-          console.log(err);
-          toast.error('Not Found');
+          toast.error(err?.response?.data?.detail);
         });
     }
   };
   const handleUnFlag = (): void => {
     if (userId) {
-      request('post', `/admin/users/${userId}/remove-flag/`)
+      request<IBlockUserResponse>('post', `/admin/users/${userId}/remove-flag/`)
         .then((res) => {
-          console.log(res);
-          toast.success('Success');
+          toast.success(res?.status);
           getFlaggedUsers();
         })
         .catch((err) => {
-          console.log(err);
-          toast.error('Not Found');
+          toast.error(err?.response?.data?.detail);
         });
     }
   };
-
-  console.log('Blocked users ', blockedUsers);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -222,7 +211,7 @@ export default function BasicTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab className="tab_li" label="All users (1k)" {...a11yProps(0)} />
+          <Tab className="tab_li" label={`All users (${users.length})`} {...a11yProps(0)} />
           <Tab className="tab_li" label="User type 1 (700)" {...a11yProps(1)} />
           <Tab className="tab_li" label="User type 2 (300)" {...a11yProps(2)} />
           <Tab
@@ -230,7 +219,7 @@ export default function BasicTabs() {
               setFlagged(true);
             }}
             className="tab_li"
-            label="Flagged users (20)"
+            label={`Flagged users (${flaggedUsers.length})`}
             {...a11yProps(3)}
           />
           <Tab
@@ -238,7 +227,7 @@ export default function BasicTabs() {
               setBlocked(true);
             }}
             className="tab_li"
-            label="Blocked users (15)"
+            label={`Blocked users (${blockedUsers.length})`}
             {...a11yProps(4)}
           />
         </Tabs>

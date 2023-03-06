@@ -19,19 +19,7 @@ interface PackageBoxProps {
 }
 
 const PackageBox: FC<PackageBoxProps> = (props) => {
-  const {
-    onChange,
-    handleSave,
-    handleEdit,
-    handleSaveEdit,
-    isNew,
-    // packageDescription,
-    // freePeriodDescription,
-    edit,
-    pkg,
-  } = props;
-
-  console.log('Package Runs ');
+  const { onChange, handleSave, handleEdit, handleSaveEdit, isNew, edit, pkg } = props;
 
   return (
     <>

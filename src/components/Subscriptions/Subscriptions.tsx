@@ -80,9 +80,6 @@ const Subscriptions: FC = () => {
         console.log(err);
       });
   };
-  console.log('🚀 ~ file: Subscriptions.tsx:51 ~ newPackage1:', newPackage1);
-  console.log('🚀 ~ file: Subscriptions.tsx:51 ~ newPackage2:', newPackage2);
-  console.log('🚀 ~ file: Subscriptions.tsx:51 ~ newPackage3:', newPackage3);
 
   const handleEdit = useCallback((): void => {
     setEdit(true);
@@ -134,7 +131,6 @@ const Subscriptions: FC = () => {
       if (pkg.description && pkg.free_period && pkg.id) {
         request<IPlanObject>('put', `/admin/subscription-plans/${pkg.id}/`, data)
           .then((res) => {
-            console.log(res);
             toast.success('Edited Successfully');
             getAllPackages();
             pkg.name === 'Package 1'
@@ -173,7 +169,6 @@ const Subscriptions: FC = () => {
     [packages3],
   );
 
-  console.log('Package ', packages);
   return (
     <div className="white-canvas">
       <div className="all-packages">

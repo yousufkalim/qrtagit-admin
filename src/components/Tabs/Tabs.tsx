@@ -95,8 +95,8 @@ export default function BasicTabs() {
   const [userId, setUserId] = useState<number | null>(null);
   const [blockedUsers, setBlockedUsers] = useState<IResponceUser[]>([]);
   const [flaggedUsers, setFlaggedUsers] = useState<IResponceUser[]>([]);
-  const blocked = true;
-  const flagged = true;
+  const blocked = 'true';
+  const flagged = 'true';
   const [value, setValue] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchValue, setSearchValue] = useState<string>('');
@@ -124,7 +124,6 @@ export default function BasicTabs() {
   }, [value]);
 
   const getFlaggedUsers = (): void => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     request<IResponceUser[]>('get', `/admin/users/?is_flagged=${flagged}`)
       .then((res) => {
         setFlaggedUsers(res);
@@ -245,7 +244,6 @@ export default function BasicTabs() {
       }
     }
   };
-  console.log(value, 'value');
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchValue(e.target.value);
   };

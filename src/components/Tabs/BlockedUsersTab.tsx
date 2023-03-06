@@ -39,14 +39,14 @@ interface ILooserObject {
 }
 interface BlockedUserTabProps {
   TabPanel: (props: TabPanelProps) => ReactElement;
-  blockedUsers: IResponceUser[];
+  searchedBlockedUsersData: IResponceUser[];
   value: number;
   handleUnBlock: () => void;
   setUserId: (id: number | null) => void;
 }
 
 const BlockedUsersTab: FC<BlockedUserTabProps> = (props) => {
-  const { TabPanel, blockedUsers, value, handleUnBlock, setUserId } = props;
+  const { TabPanel, searchedBlockedUsersData, value, handleUnBlock, setUserId } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -96,7 +96,7 @@ const BlockedUsersTab: FC<BlockedUserTabProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {blockedUsers?.map(
+              {searchedBlockedUsersData?.map(
                 (row: {
                   id: number;
                   name: string;

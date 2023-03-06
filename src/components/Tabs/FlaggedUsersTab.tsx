@@ -39,14 +39,14 @@ interface ILooserObject {
 }
 interface FlaggedUsersProps {
   TabPanel: (props: TabPanelProps) => ReactElement;
-  flaggedUsers: IResponceUser[];
+  searchedFlaggedUsersData: IResponceUser[];
   value: number;
   setUserId: (id: number | null) => void;
   handleUnFlag: () => void;
 }
 
 const FlaggedUsersTab: FC<FlaggedUsersProps> = (props) => {
-  const { TabPanel, flaggedUsers, value, handleUnFlag, setUserId } = props;
+  const { TabPanel, searchedFlaggedUsersData, value, handleUnFlag, setUserId } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -96,7 +96,7 @@ const FlaggedUsersTab: FC<FlaggedUsersProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {flaggedUsers?.map(
+              {searchedFlaggedUsersData?.map(
                 (row: {
                   id: number;
                   name: string;

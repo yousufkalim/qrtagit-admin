@@ -114,6 +114,15 @@ export default function BasicTabs() {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchValue]);
+
+  useEffect(() => {
+    setSearchValue('');
+  }, [value]);
+
   const getFlaggedUsers = (): void => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     request<IResponceUser[]>('get', `/admin/users/?is_flagged=${flagged}`)
@@ -144,6 +153,13 @@ export default function BasicTabs() {
   }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
+    if (newValue === 0) {
+      setSearchedData(users);
+    } else if (newValue === 3) {
+      setSearchedFlaggedUsersData(flaggedUsers);
+    } else if (newValue === 4) {
+      setSearchedBlockedUsersData(blockedUsers);
+    }
     setValue(newValue);
   };
 
@@ -200,22 +216,22 @@ export default function BasicTabs() {
     }
   };
 
-  const handleSearch = (v: string): void => {
-    if (v) {
+  const handleSearch = (): void => {
+    if (searchValue) {
       if (value === 0) {
         const filteredUsers = users.filter((person) =>
-          person?.name?.toLowerCase().includes(v.toLowerCase()),
+          person?.name?.toLowerCase().includes(searchValue.toLowerCase()),
         );
 
         setSearchedData(filteredUsers);
       } else if (value === 4) {
         const filteredBlockedUsers = blockedUsers.filter((person) =>
-          person?.name?.toLowerCase().includes(v.toLowerCase()),
+          person?.name?.toLowerCase().includes(searchValue.toLowerCase()),
         );
         setSearchedBlockedUsersData(filteredBlockedUsers);
       } else if (value === 3) {
         const filteredFlaggedUsers = flaggedUsers.filter((person) =>
-          person?.name?.toLowerCase().includes(v.toLowerCase()),
+          person?.name?.toLowerCase().includes(searchValue.toLowerCase()),
         );
         setSearchedFlaggedUsersData(filteredFlaggedUsers);
       }
@@ -231,7 +247,7 @@ export default function BasicTabs() {
   };
   console.log(value, 'value');
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    handleSearch(e.target.value);
+    setSearchValue(e.target.value);
   };
   return (
     <Box sx={{ width: '100%' }}>
@@ -267,6 +283,7 @@ export default function BasicTabs() {
           <TextField
             className="input_field"
             name="search"
+            value={searchValue}
             onChange={handleSearchQuery}
             inputProps={{ sx: { marginLeft: '20px' } }}
             sx={{ width: '100%' }}

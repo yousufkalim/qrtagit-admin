@@ -19,7 +19,7 @@ import BlockedUsersTab from './BlockedUsersTab';
 import './tabs.css';
 import Avatar from '@material-ui/core/Avatar/Avatar';
 import blackDots from '../../assets/tabs/BlackDots.svg';
-import search from '../../assets/tabs/Search.svg';
+import searchIcon from '../../assets/tabs/Search.svg';
 import { toast } from 'react-toastify';
 import FlaggedUsersTab from './FlaggedUsersTab';
 
@@ -95,52 +95,70 @@ export default function BasicTabs() {
   const [userId, setUserId] = useState<number | null>(null);
   const [blockedUsers, setBlockedUsers] = useState<IResponceUser[]>([]);
   const [flaggedUsers, setFlaggedUsers] = useState<IResponceUser[]>([]);
-  const [blocked, setBlocked] = useState<boolean>(false);
-  const [flagged, setFlagged] = useState<boolean>(false);
-  const [value, setValue] = useState(0);
+  const blocked = 'true';
+  const flagged = 'true';
+  const [value, setValue] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchedData, setSearchedData] = useState<IResponceUser[]>([]);
+  const [searchedBlockedUsersData, setSearchedBlockedUsersData] = useState<IResponceUser[]>([]);
+  const [searchedFlaggedUsersData, setSearchedFlaggedUsersData] = useState<IResponceUser[]>([]);
 
   const getUsers = (): void => {
     request<IResponceUser[]>('get', '/admin/users/')
       .then((res) => {
         setUsers(res);
+        setSearchedData(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchValue]);
+
+  useEffect(() => {
+    setSearchValue('');
+  }, [value]);
+
   const getFlaggedUsers = (): void => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     request<IResponceUser[]>('get', `/admin/users/?is_flagged=${flagged}`)
       .then((res) => {
         setFlaggedUsers(res);
+        setSearchedFlaggedUsersData(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const getUnblockedUsers = (): void => {
+  const getBlockedUsers = (): void => {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     request<IResponceUser[]>('get', `/admin/users/?is_blocked=${blocked}`)
       .then((res) => {
         setBlockedUsers(res);
+        setSearchedBlockedUsersData(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  useEffect(() => {
-    getFlaggedUsers();
-  }, [flagged]);
 
   useEffect(() => {
     getUsers();
+    getBlockedUsers();
+    getFlaggedUsers();
   }, []);
 
-  useEffect(() => {
-    getUnblockedUsers();
-  }, [blocked]);
-
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
+    if (newValue === 0) {
+      setSearchedData(users);
+    } else if (newValue === 3) {
+      setSearchedFlaggedUsersData(flaggedUsers);
+    } else if (newValue === 4) {
+      setSearchedBlockedUsersData(blockedUsers);
+    }
     setValue(newValue);
   };
 
@@ -150,19 +168,20 @@ export default function BasicTabs() {
         .then((res) => {
           toast.success(res?.status);
           getUsers();
-          setBlocked(false);
+          getBlockedUsers();
         })
         .catch((err) => {
           toast.error(err?.response?.data?.detail);
         });
     }
   };
+
   const handleUnBlock = (): void => {
     if (userId) {
       request<IBlockUserResponse>('post', `/admin/users/${userId}/unblock/`)
         .then((res) => {
           toast.success(res?.status);
-          getUnblockedUsers();
+          getBlockedUsers();
         })
         .catch((err) => {
           toast.error(err?.response?.data?.detail);
@@ -175,13 +194,14 @@ export default function BasicTabs() {
         .then((res) => {
           toast.success(res?.status);
           getUsers();
-          setFlagged(false);
+          getFlaggedUsers();
         })
         .catch((err) => {
           toast.error(err?.response?.data?.detail);
         });
     }
   };
+
   const handleUnFlag = (): void => {
     if (userId) {
       request<IBlockUserResponse>('post', `/admin/users/${userId}/remove-flag/`)
@@ -195,6 +215,38 @@ export default function BasicTabs() {
     }
   };
 
+  const handleSearch = (): void => {
+    if (searchValue) {
+      if (value === 0) {
+        const filteredUsers = users.filter((person) =>
+          person?.name?.toLowerCase().includes(searchValue.toLowerCase()),
+        );
+
+        setSearchedData(filteredUsers);
+      } else if (value === 4) {
+        const filteredBlockedUsers = blockedUsers.filter((person) =>
+          person?.name?.toLowerCase().includes(searchValue.toLowerCase()),
+        );
+        setSearchedBlockedUsersData(filteredBlockedUsers);
+      } else if (value === 3) {
+        const filteredFlaggedUsers = flaggedUsers.filter((person) =>
+          person?.name?.toLowerCase().includes(searchValue.toLowerCase()),
+        );
+        setSearchedFlaggedUsersData(filteredFlaggedUsers);
+      }
+    } else {
+      if (value === 0) {
+        setSearchedData(users);
+      } else if (value === 3) {
+        setSearchedFlaggedUsersData(flaggedUsers);
+      } else if (value === 4) {
+        setSearchedBlockedUsersData(blockedUsers);
+      }
+    }
+  };
+  const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchValue(e.target.value);
+  };
   return (
     <Box sx={{ width: '100%' }}>
       <Box
@@ -215,17 +267,11 @@ export default function BasicTabs() {
           <Tab className="tab_li" label="User type 1 (700)" {...a11yProps(1)} />
           <Tab className="tab_li" label="User type 2 (300)" {...a11yProps(2)} />
           <Tab
-            onClick={() => {
-              setFlagged(true);
-            }}
             className="tab_li"
             label={`Flagged users (${flaggedUsers.length})`}
             {...a11yProps(3)}
           />
           <Tab
-            onClick={() => {
-              setBlocked(true);
-            }}
             className="tab_li"
             label={`Blocked users (${blockedUsers.length})`}
             {...a11yProps(4)}
@@ -234,17 +280,20 @@ export default function BasicTabs() {
         <div className="search-bar">
           <TextField
             className="input_field"
+            name="search"
+            value={searchValue}
+            onChange={handleSearchQuery}
             inputProps={{ sx: { marginLeft: '20px' } }}
             sx={{ width: '100%' }}
             type="Search"
             placeholder="Search User"
           />
-          <img className="search-icon" src={search} alt="search" />
+          <img className="search-icon" src={searchIcon} alt="search" />
         </div>
       </Box>
       <AllUsersTab
         TabPanel={TabPanel}
-        users={users}
+        searchedData={searchedData}
         value={value}
         setUserId={setUserId}
         handleBlock={handleBlock}
@@ -319,13 +368,13 @@ export default function BasicTabs() {
       <FlaggedUsersTab
         handleUnFlag={handleUnFlag}
         TabPanel={TabPanel}
-        flaggedUsers={flaggedUsers}
+        searchedFlaggedUsersData={searchedFlaggedUsersData}
         value={value}
         setUserId={setUserId}
       />
       <BlockedUsersTab
         TabPanel={TabPanel}
-        blockedUsers={blockedUsers}
+        searchedBlockedUsersData={searchedBlockedUsersData}
         value={value}
         handleUnBlock={handleUnBlock}
         setUserId={setUserId}

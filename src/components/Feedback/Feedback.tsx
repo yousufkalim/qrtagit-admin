@@ -94,28 +94,23 @@ const Feedback: FC = () => {
         },
       });
       setQuil(quill);
-      console.log('Test ', quill);
     }
   }, []);
 
   const handleSend = (): void => {
     if (user) {
-      console.log('quilll ', quil);
       const data = {
         feedback: user?.id,
         subject: user?.subject,
         message: quil?.editor?.delta?.ops[0].insert.slice(0, -1),
       };
-      console.log(data, 'data');
       request<IResponse>('post', '/admin/feedback-reply/', data)
         .then((res) => {
           toast.success('Response sent');
           getAllFeedbacks();
-          console.log('response ', res);
           quil.setText('');
         })
         .catch((err) => {
-          console.log(err, 'catch');
           toast.error(err.response?.data?.message[0]);
         });
     }
@@ -125,7 +120,6 @@ const Feedback: FC = () => {
     setUser(val);
     quil.setText('');
   };
-  console.log(user, 'user');
   return (
     <div className="Feedback">
       <p className="Feedback_msg">{users.length} messages</p>

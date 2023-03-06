@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
-
-import Users from '../components/Users/Users';
+import Tabs from '../components/Tabs/Tabs';
 
 const Home: FC = () => {
-  return <Users />;
+  return (
+    <div className="white-canvas">
+      <Tabs />
+    </div>
+  );
 };
 
 export default Home;

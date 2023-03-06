@@ -40,7 +40,7 @@ interface ILooserObject {
 }
 interface AllUserTabProps {
   TabPanel: (props: TabPanelProps) => ReactElement;
-  users: IResponceUser[];
+  searchedData: IResponceUser[];
   value: number;
   setUserId: (id: number | null) => void;
   handleFlag: () => void;
@@ -48,7 +48,7 @@ interface AllUserTabProps {
 }
 
 const AllUsersTab: FC<AllUserTabProps> = (props) => {
-  const { TabPanel, users, setUserId, value, handleFlag, handleBlock } = props;
+  const { TabPanel, searchedData, setUserId, value, handleFlag, handleBlock } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -114,7 +114,7 @@ const AllUsersTab: FC<AllUserTabProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users?.map(
+              {searchedData?.map(
                 (row: {
                   id: number;
                   name: string;

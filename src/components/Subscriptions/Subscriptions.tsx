@@ -1,5 +1,6 @@
+/* eslint-disable no-unneeded-ternary */
 import { Avatar } from '@mui/material';
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect, useCallback } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import './Subscriptions.css';
 import PackageBox from './PackageBox';
 import { toast } from 'react-toastify';
+import request from '../../api/request';
 
 const arrayIs = [
   { name: 'john', email: 'john@gmail.com' },
@@ -18,100 +20,184 @@ const arrayIs = [
   { name: 'john2', email: 'john2@gmail.com' },
   { name: 'john3', email: 'john3@gmail.com' },
 ];
+
+interface IPlanObject {
+  name: string;
+  description: string;
+  free_period: string;
+  id: number | null;
+}
+
 const Subscriptions: FC = () => {
-  const [packages, setPackages] = useState<any>({
-    packageDescription: '',
-    freePeriod: '',
+  const [packages, setPackages] = useState<IPlanObject>({
+    name: 'Package 1',
+    description: '',
+    free_period: '',
+    id: null,
   });
-  const [packages2, setPackages2] = useState<any>({
-    packageDescription: '',
-    freePeriod: '',
+  const [packages2, setPackages2] = useState<IPlanObject>({
+    name: 'Package 2',
+    description: '',
+    free_period: '',
+    id: null,
   });
-  const [packages3, setPackages3] = useState<any>({
-    packageDescription: '',
-    freePeriod: '',
+  const [packages3, setPackages3] = useState<IPlanObject>({
+    name: 'Package 3',
+    description: '',
+    free_period: '',
+    id: null,
   });
-
   const [edit, setEdit] = useState<boolean>(false);
-  const [edit2, setEdit2] = useState(false);
-  const [edit3, setEdit3] = useState(false);
+  const [edit2, setEdit2] = useState<boolean>(false);
+  const [edit3, setEdit3] = useState<boolean>(false);
 
-  const handleEdit = (): void => {
+  const [newPackage1, setNewPackage1] = useState<boolean>(true);
+  const [newPackage2, setNewPackage2] = useState<boolean>(true);
+  const [newPackage3, setNewPackage3] = useState<boolean>(true);
+
+  useEffect(() => {
+    getAllPackages();
+  }, []);
+
+  const getAllPackages = (): void => {
+    request<IPlanObject[]>('get', '/admin/subscription-plans/')
+      .then((res) => {
+        if (res.length > 0) {
+          const result = res.find((item) => item.name === packages?.name) ?? packages;
+          const result2 = res.find((item) => item?.name === packages2?.name) ?? packages2;
+          const result3 = res.find((item) => item?.name === packages3?.name) ?? packages3;
+
+          setNewPackage1(result.description === '' && result.free_period === '');
+          setNewPackage2(result2.description === '' && result2.free_period === '');
+          setNewPackage3(result3.description === '' && result3.free_period === '');
+
+          setPackages(result);
+          setPackages2(result2);
+          setPackages3(result3);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleEdit = useCallback((): void => {
     setEdit(true);
-  };
-  const handleEdit2 = (): void => {
+  }, [setEdit]);
+  const handleEdit2 = useCallback((): void => {
     setEdit2(true);
-  };
-  const handleEdit3 = (): void => {
+  }, [setEdit2]);
+  const handleEdit3 = useCallback((): void => {
     setEdit3(true);
-  };
+  }, [setEdit3]);
 
-  const handleSave = (): void => {
-    if (packages.packageDescription && packages.freePeriod) {
-      setEdit(false);
-      setPackages({ ...packages });
-    } else toast.error('Fields cannot be empty');
-  };
+  const handleSave = useCallback(
+    (pkg: IPlanObject): void => {
+      const data = {
+        name: pkg.name,
+        description: pkg.description,
+        free_period: pkg.free_period,
+        id: pkg.id,
+      };
+      if (packages.description && packages.free_period) {
+        request<IPlanObject>('post', '/admin/subscription-plans/', data)
+          .then((res) => {
+            toast.success('Package Saved');
+            getAllPackages();
+            pkg.name === 'Package 1'
+              ? setEdit(false)
+              : pkg.name === 'Package 2'
+              ? setEdit2(false)
+              : pkg.name === 'Package 3' && setEdit3(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        toast.error('Fields cannot be empty');
+      }
+    },
+    [packages],
+  );
 
-  const handleSave2 = (): void => {
-    if (packages2.packageDescription && packages2.freePeriod) {
-      setEdit2(false);
-      setPackages2({ ...packages2 });
-    } else toast.error('Fields cannot be empty');
-  };
+  const handleSaveEdit = useCallback(
+    (pkg: IPlanObject): void => {
+      const data = {
+        name: pkg.name,
+        description: pkg.description,
+        free_period: pkg.free_period,
+        id: pkg.id,
+      };
+      if (pkg.description && pkg.free_period && pkg.id) {
+        request<IPlanObject>('put', `/admin/subscription-plans/${pkg.id}/`, data)
+          .then((res) => {
+            toast.success('Edited Successfully');
+            getAllPackages();
+            pkg.name === 'Package 1'
+              ? setEdit(false)
+              : pkg.name === 'Package 2'
+              ? setEdit2(false)
+              : pkg.name === 'Package 3' && setEdit3(false);
+          })
+          .catch((err) => {
+            toast.error(err.response?.data?.detail);
+          });
+      } else {
+        toast.error('Fields cannot be empty');
+      }
+    },
+    [packages],
+  );
 
-  const handleSave3 = (): void => {
-    if (packages3.packageDescription && packages3.freePeriod) {
-      setEdit3(false);
-      setPackages3({ ...packages3 });
-    } else toast.error('Fields cannot be empty');
-  };
+  const handleInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      setPackages({ ...packages, [e.target.name]: e.target.value });
+    },
+    [packages],
+  );
 
-  const handleInput = (e: any): void => {
-    setPackages({ ...packages, [e.target.name]: e.target.value });
-  };
-  const handleInput2 = (e: any): void => {
-    setPackages2({ ...packages2, [e.target.name]: e.target.value });
-  };
-  const handleInput3 = (e: any): void => {
-    setPackages3({ ...packages3, [e.target.name]: e.target.value });
-  };
+  const handleInput2 = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      setPackages2({ ...packages2, [e.target.name]: e.target.value });
+    },
+    [packages2],
+  );
+  const handleInput3 = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      setPackages3({ ...packages3, [e.target.name]: e.target.value });
+    },
+    [packages3],
+  );
 
   return (
     <div className="white-canvas">
       <div className="all-packages">
         <PackageBox
-          heading="Package 1"
+          pkg={packages}
           onChange={handleInput}
           handleSave={handleSave}
+          handleSaveEdit={handleSaveEdit}
           handleEdit={handleEdit}
-          packageDescription={packages.packageDescription}
-          freePeriodDescription={packages.freePeriod}
-          valueFreePeriod={packages.freePeriod}
-          valuePackageDescription={packages.packageDescription}
           edit={edit}
+          isNew={newPackage1}
         />
         <PackageBox
-          heading="Package 2"
+          pkg={packages2}
           onChange={handleInput2}
-          handleSave={handleSave2}
+          handleSave={handleSave}
           handleEdit={handleEdit2}
-          packageDescription={packages2.packageDescription}
-          freePeriodDescription={packages2.freePeriod}
-          valueFreePeriod={packages2.freePeriod}
-          valuePackageDescription={packages2.packageDescription}
+          handleSaveEdit={handleSaveEdit}
           edit={edit2}
+          isNew={newPackage2}
         />
         <PackageBox
-          heading="Package 3"
+          pkg={packages3}
           onChange={handleInput3}
-          handleSave={handleSave3}
+          handleSave={handleSave}
           handleEdit={handleEdit3}
-          packageDescription={packages3.packageDescription}
-          freePeriodDescription={packages3.freePeriod}
-          valueFreePeriod={packages3.freePeriod}
-          valuePackageDescription={packages3.packageDescription}
+          handleSaveEdit={handleSaveEdit}
           edit={edit3}
+          isNew={newPackage3}
         />
       </div>
       <div>

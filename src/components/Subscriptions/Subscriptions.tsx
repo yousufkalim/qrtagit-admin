@@ -25,7 +25,7 @@ interface IPlanObject {
   name: string;
   description: string;
   free_period: string;
-  id: number;
+  id: number | null;
 }
 
 const Subscriptions: FC = () => {
@@ -33,19 +33,19 @@ const Subscriptions: FC = () => {
     name: 'Package 1',
     description: '',
     free_period: '',
-    id: 1,
+    id: null,
   });
   const [packages2, setPackages2] = useState<IPlanObject>({
     name: 'Package 2',
     description: '',
     free_period: '',
-    id: 2,
+    id: null,
   });
   const [packages3, setPackages3] = useState<IPlanObject>({
     name: 'Package 3',
     description: '',
     free_period: '',
-    id: 3,
+    id: null,
   });
   const [edit, setEdit] = useState<boolean>(false);
   const [edit2, setEdit2] = useState<boolean>(false);
@@ -131,7 +131,7 @@ const Subscriptions: FC = () => {
         free_period: pkg.free_period,
         id: pkg.id,
       };
-      if (pkg.description && pkg.free_period) {
+      if (pkg.description && pkg.free_period && pkg.id) {
         request<IPlanObject>('put', `/admin/subscription-plans/${pkg.id}/`, data)
           .then((res) => {
             console.log(res);
@@ -144,7 +144,7 @@ const Subscriptions: FC = () => {
               : pkg.name === 'Package 3' && setEdit3(false);
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(err.response?.data?.detail);
           });
       } else {
         toast.error('Fields cannot be empty');

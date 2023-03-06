@@ -97,7 +97,7 @@ export default function BasicTabs() {
   const [flaggedUsers, setFlaggedUsers] = useState<IResponceUser[]>([]);
   const blocked = true;
   const flagged = true;
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchValue, setSearchValue] = useState<string>('');
   const [searchedData, setSearchedData] = useState<IResponceUser[]>([]);
@@ -200,28 +200,36 @@ export default function BasicTabs() {
     }
   };
 
-  const handleSearch = (value: string): void => {
-    if (value) {
-      const filteredUsers = users.filter((person) =>
-        person?.name?.toLowerCase().includes(value.toLowerCase()),
-      );
-      const filteredBlockedUsers = blockedUsers.filter((person) =>
-        person?.name?.toLowerCase().includes(value.toLowerCase()),
-      );
-      const filteredFlaggedUsers = flaggedUsers.filter((person) =>
-        person?.name?.toLowerCase().includes(value.toLowerCase()),
-      );
-      setSearchedData(filteredUsers);
-      setSearchedBlockedUsersData(filteredBlockedUsers);
-      setSearchedFlaggedUsersData(filteredFlaggedUsers);
-      setSearchValue(value);
+  const handleSearch = (v: string): void => {
+    if (v) {
+      if (value === 0) {
+        const filteredUsers = users.filter((person) =>
+          person?.name?.toLowerCase().includes(v.toLowerCase()),
+        );
+
+        setSearchedData(filteredUsers);
+      } else if (value === 4) {
+        const filteredBlockedUsers = blockedUsers.filter((person) =>
+          person?.name?.toLowerCase().includes(v.toLowerCase()),
+        );
+        setSearchedBlockedUsersData(filteredBlockedUsers);
+      } else if (value === 3) {
+        const filteredFlaggedUsers = flaggedUsers.filter((person) =>
+          person?.name?.toLowerCase().includes(v.toLowerCase()),
+        );
+        setSearchedFlaggedUsersData(filteredFlaggedUsers);
+      }
     } else {
-      setSearchedData(users);
-      setSearchedBlockedUsersData(blockedUsers);
-      setSearchedFlaggedUsersData(flaggedUsers);
-      setSearchValue(value);
+      if (value === 0) {
+        setSearchedData(users);
+      } else if (value === 3) {
+        setSearchedFlaggedUsersData(flaggedUsers);
+      } else if (value === 4) {
+        setSearchedBlockedUsersData(blockedUsers);
+      }
     }
   };
+  console.log(value, 'value');
   const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>): void => {
     handleSearch(e.target.value);
   };

@@ -6,7 +6,7 @@ interface IPackage {
   name: string;
   description: string;
   free_period: string;
-  id: number;
+  id: number | null;
 }
 interface PackageBoxProps {
   onChange: any;

@@ -1,17 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { TextField } from '@mui/material';
 import editImg from '../../assets/Subscription/edit.svg';
 
+interface IPackage {
+  name: string;
+  description: string;
+  free_period: string;
+  id: number;
+}
 interface PackageBoxProps {
   onChange: any;
-  handleSave: any;
-  handleEdit: any;
-  packageDescription: string;
-  freePeriodDescription: string;
-  valueFreePeriod: string;
-  valuePackageDescription: string;
-  heading: string;
+  handleSave: (pkg: IPackage) => void;
+  handleEdit: () => void;
+  handleSaveEdit: (pkg: IPackage) => void;
   edit: boolean;
+  pkg: IPackage;
+  isNew: boolean;
 }
 
 const PackageBox: FC<PackageBoxProps> = (props) => {
@@ -19,24 +23,27 @@ const PackageBox: FC<PackageBoxProps> = (props) => {
     onChange,
     handleSave,
     handleEdit,
-    packageDescription,
-    freePeriodDescription,
-    valueFreePeriod,
-    valuePackageDescription,
-    heading,
+    handleSaveEdit,
+    isNew,
+    // packageDescription,
+    // freePeriodDescription,
     edit,
+    pkg,
   } = props;
+
+  console.log('Package Runs ');
+
   return (
     <>
       {edit ? (
         <div className="package-box">
-          <div className="header-div">{heading}</div>
+          <div className="header-div">{pkg.name}</div>
           <div className="below-header">
             <div>
               <h2 className="heading">Package Description</h2>
               <TextField
-                name="packageDescription"
-                value={valuePackageDescription}
+                name="description"
+                value={pkg?.description}
                 onChange={onChange}
                 fullWidth
               />
@@ -44,14 +51,19 @@ const PackageBox: FC<PackageBoxProps> = (props) => {
             <div>
               <h2 className="heading">Free period</h2>
               <TextField
-                name="freePeriod"
-                value={valueFreePeriod}
+                name="free_period"
+                value={pkg?.free_period}
                 onChange={onChange}
                 fullWidth
                 placeholder="2 months"
               />
             </div>
-            <button onClick={handleSave} className="saveBtn">
+            <button
+              onClick={() => {
+                isNew ? handleSave(pkg) : handleSaveEdit(pkg);
+              }}
+              className="saveBtn"
+            >
               Save
             </button>
           </div>
@@ -59,7 +71,7 @@ const PackageBox: FC<PackageBoxProps> = (props) => {
       ) : (
         <div className="package-box">
           <div className="header-div">
-            {heading}
+            {pkg?.name}
             <div>
               <img style={{ cursor: 'pointer' }} src={editImg} onClick={handleEdit} alt="" />
             </div>
@@ -67,12 +79,12 @@ const PackageBox: FC<PackageBoxProps> = (props) => {
           <div className="below-header">
             <div>
               <h2 className="heading">Package Description</h2>
-              <span className="pkg-description">{packageDescription}</span>
+              <span className="pkg-description">{pkg.description}</span>
             </div>
             <div className="divider"></div>
             <div>
               <h2 className="heading">Free period</h2>
-              <span className="pkg-description">{freePeriodDescription}</span>
+              <span className="pkg-description">{pkg.free_period}</span>
             </div>
           </div>
         </div>
@@ -81,4 +93,4 @@ const PackageBox: FC<PackageBoxProps> = (props) => {
   );
 };
 
-export default PackageBox;
+export default memo(PackageBox);
